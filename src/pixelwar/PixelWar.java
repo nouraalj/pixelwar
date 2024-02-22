@@ -3,6 +3,7 @@ package pixelwar;
 import java.util.concurrent.Executors;
 
 import pixelwar.strategy.ImageTreeMutex;
+import pixelwar.strategy.ImageTreePixelMutex;
 
 import java.util.concurrent.ExecutorService;
 
@@ -32,12 +33,16 @@ public class PixelWar {
 
 		
 		ImageTreeMutex img = new ImageTreeMutex(4);
+		//ImageTreePixelMutex img = new ImageTreePixelMutex(4);
 		ExecutorService pool = Executors.newFixedThreadPool(4);
+		
 		for(int i = 0; i<11; i++) {
-			if (i%2 == 0) {
+			if (i%3 == 0) {
 				pool.submit(new DrawTile(t2, img));
-			} else {
+			} else if (i%3 == 1) {
 				pool.submit(new DrawTile(t3, img));
+			} else {
+				pool.submit(new DrawTile(t1, img));
 			}
 		}
 		ImageTreeMutex.showTree(img.getroot());

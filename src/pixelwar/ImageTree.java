@@ -18,7 +18,7 @@ public abstract class ImageTree{
     	else {
     		 root = new InterNode();
     		 cptIN++;
-    		createTree((InterNode) root, h, 0);
+    		createTree((InterNode) root, h, 0, 1);
     	}
     }
     
@@ -40,9 +40,10 @@ public abstract class ImageTree{
      	//System.out.println("P : " + cptP);
  		
      }
-    public abstract void createTree(InterNode parent, int depth, int id_parent);
+    public abstract void createTree(InterNode parent, int depth, int tmpid, int poids);
     public abstract void putPixel(int id);
     public abstract void putTile(Tile t);
+    
     /*public String toString() {
     	StringBuilder s = new StringBuilder();
     	Node s;

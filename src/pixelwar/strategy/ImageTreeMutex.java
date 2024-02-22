@@ -15,11 +15,33 @@ public class ImageTreeMutex extends ImageTree {
     	super(N);
     }
     
-    public void createTree(InterNode parent, int depth, int id_parent) {
+    public void createTree(InterNode parent, int depth, int tmpid, int poids) {
     	
     	if(depth != 0) {
-    		/* je pense que le plus simple pour id les pixels,
-    		c'est que les noeuds internes aient aussi un id */
+    		InterNode right = new InterNode();
+    		InterNode left = new InterNode();
+    		parent.set(left, right);
+    		
+    		 //on crée le sous-arbre droit
+    		createTree(right, depth - 1, (tmpid | poids), poids << 1);
+    		 //on crée le sous-arbre gauche
+    		createTree(left, depth - 1, tmpid, poids << 1);
+
+    	} else {
+    		Pixel pr = new Pixel((tmpid | poids)); 
+    		Pixel pl = new Pixel(tmpid); 
+
+    		parent.setPixel(pl, pr);
+    	}
+    }
+    
+    
+    /*
+     * public void createTree(InterNode parent, int depth, int id_parent) {
+    	
+    	if(depth != 0) {
+    		// je pense que le plus simple pour id les pixels,
+    		//c'est que les noeuds internes aient aussi un id
     		InterNode right = new InterNode();
     		super.cptIN++;
     		InterNode left = new InterNode();
@@ -39,11 +61,19 @@ public class ImageTreeMutex extends ImageTree {
     		parent.setPixel(pl, pr);
     	}
     }
-    
+     */
     
     
 	public void putPixel(int id) {
-			/*convertir en string*/
+			Pixel p = Utils.findPixel(id, this);
+            p.setOwner(Thread.currentThread().getId());
+            System.out.println( "Pixel d'id : " + p.getId() + " posé par thread : " + p.getOwner());
+	}
+	
+	
+	/*
+	 public void putPixel(int id) {
+			//convertir en string
 			Node cur = root;
 			int tmpid = Utils.inverser(id);
             
@@ -64,11 +94,9 @@ public class ImageTreeMutex extends ImageTree {
             }
             ((Pixel)cur).setOwner(Thread.currentThread().getId());
             System.out.println( "Pixel d'id : " + ((Pixel)cur).getId() + " posé par thread : " + ((Pixel)cur).getOwner());
-        
-		
-		
-		
 	}
+	 */
+	
 
 	@Override
 	public void putTile(Tile t) {
@@ -77,6 +105,7 @@ public class ImageTreeMutex extends ImageTree {
 			for (int id : t.getIds()) {
 				putPixel(id);
 			}
+			System.out.println("\n");
 		} finally {
 			mutex.unlock();
 		}

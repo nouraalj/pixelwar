@@ -15,11 +15,32 @@ public class ImageTreePixelMutex extends ImageTree {
 	}
 
 	
+	public void createTree(InterNode parent, int depth, int tmpid, int poids) {
+		
+		if(depth != 0) {
+    		InterNode right = new InterNode();
+    		InterNode left = new InterNode();
+    		parent.set(left, right);
+    		
+    		 //on crée le sous-arbre droit
+    		createTree(right, depth - 1, (tmpid | poids), poids << 1);
+    		 //on crée le sous-arbre gauche
+    		createTree(left, depth - 1, tmpid, poids << 1);
+
+    	} else {
+    		Pixel pr = new PixelMutex((tmpid | poids)); 
+    		Pixel pl = new PixelMutex(tmpid); 
+
+    		parent.setPixel(pl, pr);
+    	}
+    }
+	
+	/*
 	public void createTree(InterNode parent, int depth, int id_parent) {
     	
     	if(depth != 0) {
-    		/* je pense que le plus simple pour id les pixels,
-    		c'est que les noeuds internes aient aussi un id */
+    		//je pense que le plus simple pour id les pixels,
+    		//c'est que les noeuds internes aient aussi un id
     		InterNode right = new InterNode();
     		cptIN++;
     		InterNode left = new InterNode();
@@ -38,7 +59,8 @@ public class ImageTreePixelMutex extends ImageTree {
     		cptP++;
     		parent.setPixel(pl, pr);
     	}
-    }	
+    }
+    */
 	
 	@Override
 	public void putPixel(int id) {
@@ -46,6 +68,7 @@ public class ImageTreePixelMutex extends ImageTree {
 		try {
 			p.lockPixel();
 			p.setOwner(Thread.currentThread().getId());
+			System.out.println( "Pixel d'id : " + p.getId() + " posé par thread : " + p.getOwner());
 		} finally {
 			p.unlockPixel();
 
@@ -57,10 +80,11 @@ public class ImageTreePixelMutex extends ImageTree {
 	public void putTile(Tile t) {
 		int[] ids = t.getIds();
 		Arrays.sort(ids);
+		
 		for (int id : ids) {
 			putPixel(id);
 		}
-
+		System.out.println("\n");
 	}
 
 

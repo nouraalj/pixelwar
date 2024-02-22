@@ -26,7 +26,23 @@ public  class Utils {
 	  }
 	  
 	    public static Pixel findPixel(int id, ImageTree tree) {
-	    	return null;
+	    	Node cur = tree.getroot();
+            
+            while(!cur.hasPixel()) {
+            	if ((id %2) == 0) {
+            		cur = cur.getLeft();
+            	} else {
+            		cur = cur.getRight();
+            	}
+            	id = id >> 1;
+            }
+            //pixel :
+            if ((id%2) == 0) {
+            	cur = cur.getLeft();            
+            } else {
+            	cur = cur.getRight();            
+            }
+            return (Pixel)cur;
 	    }
 
 	  
