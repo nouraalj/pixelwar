@@ -13,27 +13,6 @@ public class ImageTreePixelMutex extends ImageTree {
 	public ImageTreePixelMutex(int N) {
 		super(N);
 	}
-
-	
-	public void createTree(InterNode parent, int depth, int tmpid, int poids) {
-		
-		if(depth != 0) {
-    		InterNode right = new InterNode();
-    		InterNode left = new InterNode();
-    		parent.set(left, right);
-    		
-    		 //on crée le sous-arbre droit
-    		createTree(right, depth - 1, (tmpid | poids), poids << 1);
-    		 //on crée le sous-arbre gauche
-    		createTree(left, depth - 1, tmpid, poids << 1);
-
-    	} else {
-    		Pixel pr = new PixelMutex((tmpid | poids)); 
-    		Pixel pl = new PixelMutex(tmpid); 
-
-    		parent.setPixel(pl, pr);
-    	}
-    }
 	
 	/*
 	public void createTree(InterNode parent, int depth, int id_parent) {
@@ -61,6 +40,17 @@ public class ImageTreePixelMutex extends ImageTree {
     	}
     }
     */
+	
+	@Override
+	public Pixel createPixel(int id, int x, int y) {
+		return new PixelMutex(id, x, y);
+	}
+
+	@Override
+	public InterNode createInterNode() {
+		return new InterNode();
+	}
+	
 	
 	@Override
 	public void putPixel(int id) {

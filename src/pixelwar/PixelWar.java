@@ -22,7 +22,7 @@ public class PixelWar {
 		//(Runnable) ()-> {img.putPixel(0) }
 	}
 	
-	public static void main(String[] args) {
+	public static void main1(String[] args) {
 		int[] ids = {0, 1, 2, 3};
 		int[] ids2 = {3, 6, 7};
 		int[] ids3 = {3, 6, 7, 4};
@@ -32,7 +32,7 @@ public class PixelWar {
 		Tile t3 = new Tile(ids3);
 
 		
-		ImageTreeMutex img = new ImageTreeMutex(4);
+		ImageTreePixelMutex img = new ImageTreePixelMutex(4);
 		//ImageTreePixelMutex img = new ImageTreePixelMutex(4);
 		ExecutorService pool = Executors.newFixedThreadPool(4);
 		
@@ -46,6 +46,15 @@ public class PixelWar {
 			}
 		}
 		ImageTreeMutex.showTree(img.getroot());
+		pool.shutdown();
 		//(Runnable) ()-> {img.putPixel(0) }
 	}
+	
+	public static void main(String[] args) {
+		ImageTreePixelMutex img = new ImageTreePixelMutex(4);
+		img.createMatrix();
+		img.showMatrix();
+		
+	}
+	
 }

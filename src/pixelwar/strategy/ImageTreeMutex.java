@@ -4,7 +4,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import pixelwar.ImageTree;
 import pixelwar.InterNode;
-import pixelwar.Node;
 import pixelwar.Pixel;
 import pixelwar.Tile;
 import pixelwar.Utils;
@@ -15,25 +14,6 @@ public class ImageTreeMutex extends ImageTree {
     	super(N);
     }
     
-    public void createTree(InterNode parent, int depth, int tmpid, int poids) {
-    	
-    	if(depth != 0) {
-    		InterNode right = new InterNode();
-    		InterNode left = new InterNode();
-    		parent.set(left, right);
-    		
-    		 //on crée le sous-arbre droit
-    		createTree(right, depth - 1, (tmpid | poids), poids << 1);
-    		 //on crée le sous-arbre gauche
-    		createTree(left, depth - 1, tmpid, poids << 1);
-
-    	} else {
-    		Pixel pr = new Pixel((tmpid | poids)); 
-    		Pixel pl = new Pixel(tmpid); 
-
-    		parent.setPixel(pl, pr);
-    	}
-    }
     
     
     /*
@@ -109,6 +89,17 @@ public class ImageTreeMutex extends ImageTree {
 		} finally {
 			mutex.unlock();
 		}
+	}
+
+	@Override
+	public Pixel createPixel(int id, int x, int y) {
+		// TODO Auto-generated method stub
+		return new Pixel(id, x, y);
+	}
+
+	@Override
+	public InterNode createInterNode() {
+		return new InterNode();
 	}
 	
 
