@@ -1,16 +1,12 @@
 package pixelwar;
 
 public class InterNode extends Node {
-	Node left;
-	Node right;
+	private Node left;
+	private Node right;
 	
 	public InterNode(InterNode left, InterNode right) {
 		this.left = left;
 		this.right = right;
-	}
-	public InterNode(Pixel p) {
-		this.left = p;
-		this.right = null;
 	}
 	
 	public InterNode() {

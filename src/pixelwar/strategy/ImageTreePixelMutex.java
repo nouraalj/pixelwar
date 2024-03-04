@@ -14,38 +14,13 @@ public class ImageTreePixelMutex extends ImageTree {
 		super(N);
 	}
 	
-	/*
-	public void createTree(InterNode parent, int depth, int id_parent) {
-    	
-    	if(depth != 0) {
-    		//je pense que le plus simple pour id les pixels,
-    		//c'est que les noeuds internes aient aussi un id
-    		InterNode right = new InterNode();
-    		cptIN++;
-    		InterNode left = new InterNode();
-    		cptIN++;
-    		parent.set(left, right);
-    		//System.out.println("" + cptIN);
-    		 //on crée le sous-arbre droit
-    		createTree(right, depth - 1, (id_parent*2)+1);
-    		 //on crée le sous-arbre gauche
-    		createTree(left, depth - 1, (id_parent*2));
-
-    	} else {
-    		Pixel pl = new PixelMutex((id_parent*2)); //id à calculer
-    		Pixel pr = new PixelMutex((id_parent*2)+1); //id à calculer
-
-    		cptP++;
-    		parent.setPixel(pl, pr);
-    	}
-    }
-    */
 	
 	@Override
 	public Pixel createPixel(int id, int x, int y) {
 		return new PixelMutex(id, x, y);
 	}
 
+	
 	@Override
 	public InterNode createInterNode() {
 		return new InterNode();
@@ -54,7 +29,7 @@ public class ImageTreePixelMutex extends ImageTree {
 	
 	@Override
 	public void putPixel(int id) {
-		PixelMutex p = (PixelMutex) Utils.findPixel(id, this);
+		PixelMutex p = (PixelMutex) this.findPixel(id);
 		try {
 			p.lockPixel();
 			p.setOwner(Thread.currentThread().getId());
@@ -77,7 +52,35 @@ public class ImageTreePixelMutex extends ImageTree {
 		System.out.println("\n");
 	}
 
-
-
-
 }
+
+
+
+
+
+/*
+public void createTree(InterNode parent, int depth, int id_parent) {
+	
+	if(depth != 0) {
+		//je pense que le plus simple pour id les pixels,
+		//c'est que les noeuds internes aient aussi un id
+		InterNode right = new InterNode();
+		cptIN++;
+		InterNode left = new InterNode();
+		cptIN++;
+		parent.set(left, right);
+		//System.out.println("" + cptIN);
+		 //on crée le sous-arbre droit
+		createTree(right, depth - 1, (id_parent*2)+1);
+		 //on crée le sous-arbre gauche
+		createTree(left, depth - 1, (id_parent*2));
+
+	} else {
+		Pixel pl = new PixelMutex((id_parent*2)); //id à calculer
+		Pixel pr = new PixelMutex((id_parent*2)+1); //id à calculer
+
+		cptP++;
+		parent.setPixel(pl, pr);
+	}
+}
+*/

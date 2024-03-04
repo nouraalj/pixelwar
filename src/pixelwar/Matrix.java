@@ -1,14 +1,15 @@
 package pixelwar;
-public class Matrix {
 
-	private int sizeM;
+public class Matrix {
+	private int sizeM; // dimension du côté de la matrice
 	private Pixel[][] img;
 	
 	public Matrix(int size) {
 		this.sizeM = size;
 		img = new Pixel[sizeM][sizeM];
+		
 		for (int i = 0; i< sizeM; i++) {
-			for (int j =0; j < sizeM; j++) {
+			for (int j = 0; j < sizeM; j++) {
 				img[i][j] = null;	
 			}
 		}
@@ -19,6 +20,6 @@ public class Matrix {
 	}
 	
 	public void setPixel(Pixel p) {
-		img[p.getX()][p.getY()] = p;
+		img[p.getY()][p.getX()] = p;
 	}
 }

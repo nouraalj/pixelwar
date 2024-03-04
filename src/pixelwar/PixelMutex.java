@@ -7,7 +7,6 @@ public class PixelMutex extends Pixel {
 
 	public PixelMutex(int id, int x, int y) {
 		super(id, x, y);
-		
 	}
 	
 	public void lockPixel() {
