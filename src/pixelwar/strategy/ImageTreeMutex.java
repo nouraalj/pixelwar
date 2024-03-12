@@ -13,21 +13,13 @@ public class ImageTreeMutex extends ImageTree {
     public ImageTreeMutex(int N) {
     	super(N);
     }    
-    
-    
-	public void putPixel(int id) {
-			Pixel p = this.findPixel(id);
-            p.setOwner(Thread.currentThread().getId());
-            System.out.println( "Pixel d'id : " + p.getId() + " posé par thread : " + p.getOwner());
-	}
-	
 
 	@Override
 	public void putTile(Tile t) {
 		try {
 			mutex.lock();
-			for (int id : t.getIds()) {
-				putPixel(id);
+			for (Pixel p : t.getPixels()) {
+				putPixel(p);
 			}
 			System.out.println("\n");
 		} finally {

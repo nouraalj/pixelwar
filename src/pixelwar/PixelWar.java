@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 public class PixelWar {
 
 	public static void main0(String[] args) {
-		
+	
 		ImageTreeMutex img = new ImageTreeMutex(4);
 		ExecutorService pool = Executors.newFixedThreadPool(2);
 		for( int i = 0; i < 2; i++) {
@@ -23,19 +23,29 @@ public class PixelWar {
 	}
 	
 	
-	public static void main1(String[] args) {
+	public static void main(String[] args) {
 		int[] ids = {0, 1, 2, 3};
 		int[] ids2 = {3, 6, 7};
 		int[] ids3 = {3, 6, 7, 4};
+		
+		int N = 4;
+		//Tile t1 = new Tile(ids);
+		//Tile t2 = new Tile(ids2);
+		//Tile t3 = new Tile(ids3);
 
-		Tile t1 = new Tile(ids);
-		Tile t2 = new Tile(ids2);
-		Tile t3 = new Tile(ids3);
+		ImageTreeMutex img = new ImageTreeMutex(8);
+		
+		//Tile t = new Tile(img.getN(), img);
+		Tile tm = new Tile(img.getN(), img.getMatrix());
 
-		ImageTreePixelMutex img = new ImageTreePixelMutex(4);
+		//System.out.println(t.toString());
+		System.out.println(tm.toString());
+
+
 		//ImageTreePixelMutex img = new ImageTreePixelMutex(4);
 		ExecutorService pool = Executors.newFixedThreadPool(4);
-		
+		pool.submit(new DrawTile(tm, img));
+		/*
 		for(int i = 0; i<11; i++) {
 			if (i%3 == 0) {
 				pool.submit(new DrawTile(t2, img));
@@ -48,10 +58,12 @@ public class PixelWar {
 		ImageTreeMutex.showTree(img.getroot());
 		pool.shutdown();
 		//(Runnable) ()-> {img.putPixel(0) }
+		 * 
+		 */
 	}
 	
 	
-	public static void main(String[] args) throws Exception {
+	public static void main1(String[] args) throws Exception {
 		
 		ImageTreeMutex img = new ImageTreeMutex(32);
 		

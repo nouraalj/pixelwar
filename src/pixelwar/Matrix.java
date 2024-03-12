@@ -19,6 +19,11 @@ public class Matrix {
 		return img;
 	}
 	
+	public Pixel getPixel(int x, int y) {
+		return img[x][y];
+		
+	}
+	
 	public void setPixel(Pixel p) {
 		img[p.getY()][p.getX()] = p;
 	}

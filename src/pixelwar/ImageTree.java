@@ -39,6 +39,9 @@ public abstract class ImageTree{
     	return this.N;
     }
     
+    public int getH() {
+    	return this.h;
+    }
     
     /* Crée l'arbre de hauteur depth enraciné sous le noeud parent */
     private void createTree(InterNode parent, int depth, int tmpid, int poids, int xmin, int xmax, int ymin, int ymax) {
@@ -164,6 +167,13 @@ public abstract class ImageTree{
     	return matrix;
     }
     
+    public Matrix getMatrix() {
+    	if(this.matrix == null) {
+    		createMatrix();    		
+    	}
+    	return matrix;
+    }
+    
     
     /* Affiche la matrice associée à l'arbre */
     public void showMatrix() {
@@ -225,12 +235,16 @@ public abstract class ImageTree{
      }
    
     
+    public void putPixel(Pixel p) {
+    	p.setOwner(Thread.currentThread().getId());
+    	System.out.println( "Pixel d'id : " + p.getId() + " posé par thread : " + p.getOwner());
+    }
     
     // abstract methods
     public abstract Pixel createPixel(int id, int x, int y);
     public abstract InterNode createInterNode();
 
-    public abstract void putPixel(int id);
+    
     public abstract void putTile(Tile t);
     
     

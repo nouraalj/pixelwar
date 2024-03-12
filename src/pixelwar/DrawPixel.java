@@ -11,7 +11,7 @@ public class DrawPixel implements Runnable {
 
 	@Override
 	public void run() {
-		t.putPixel(id);
+		//t.putPixel();
 	}
 
 }
