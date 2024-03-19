@@ -8,9 +8,23 @@ public class InterNodeMutex extends InterNode {
 	 
 	 public void lockNode() {
 			mutex.lock();
-		}
+	}
 		
-		public void unlockNode() {
+	public void unlockNode() {
 			mutex.unlock();
+			mutex.notifyAll();
+	}
+	
+	public boolean isLocked() {
+		return mutex.isLocked();
+	}
+	
+	public void waitNode() {
+		try {
+			mutex.wait();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+	}
+
 }

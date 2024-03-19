@@ -67,4 +67,28 @@ public class Pixel extends Node {
 	public String toString() {
 		return this.id + ":(" + this.x + "," + this.y + ")";
 	}
+
+	@Override
+	public boolean isLocked() {
+		// TODO Auto-generated method stub
+		return false; //notSupportedException
+	}
+
+	@Override
+	public void waitNode() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void lockNode() {
+		// TODO Auto-generated method stub
+		//notSupportedException
+	}
+
+	@Override
+	public void unlockNode() {
+		// TODO Auto-generated method stub
+		//notSupportedException
+	}
 }

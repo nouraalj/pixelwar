@@ -9,12 +9,16 @@ public class PixelMutex extends Pixel {
 		super(id, x, y);
 	}
 	
-	public void lockPixel() {
+	public void lockNode() {
 		mutex.lock();
 	}
 	
-	public void unlockPixel() {
+	public void unlockNode() {
 		mutex.unlock();
 	}
 
+	@Override
+	public boolean isLocked() {
+		return mutex.isLocked();
+	}
 }

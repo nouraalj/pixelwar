@@ -1,6 +1,5 @@
 package pixelwar.strategy;
 
-import java.util.Arrays;
 import java.util.List;
 
 import pixelwar.ImageTree;
@@ -8,7 +7,6 @@ import pixelwar.InterNode;
 import pixelwar.Pixel;
 import pixelwar.PixelMutex;
 import pixelwar.Tile;
-import pixelwar.Utils;
 
 public class ImageTreePixelMutex extends ImageTree {
 	public ImageTreePixelMutex(int N) {
@@ -27,9 +25,11 @@ public class ImageTreePixelMutex extends ImageTree {
 	}
 	
 	
-	public void putPixel(Pixel p) {
-        p.setOwner(Thread.currentThread().getId());
+	public void putPixel(PixelMutex p) {
+		p.lockNode();
+		p.setOwner(Thread.currentThread().getId());
         System.out.println( "Pixel d'id : " + p.getId() + " posé par thread : " + p.getOwner());
+        p.unlockNode();
 	}
 
 
@@ -38,7 +38,7 @@ public class ImageTreePixelMutex extends ImageTree {
 		List<Pixel> pixels = t.getPixels();
 		
 		for (Pixel p : pixels) {
-			putPixel(p);
+			putPixel((PixelMutex) p);
 		}
 		System.out.println("\n");
 	}

@@ -6,7 +6,6 @@ import pixelwar.ImageTree;
 import pixelwar.InterNode;
 import pixelwar.Pixel;
 import pixelwar.Tile;
-import pixelwar.Utils;
 
 public class ImageTreeMutex extends ImageTree {
     private ReentrantLock mutex = new ReentrantLock();

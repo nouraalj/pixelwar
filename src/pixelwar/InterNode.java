@@ -32,5 +32,28 @@ public class InterNode extends Node {
 		return left instanceof Pixel;
 	}
 
+	@Override
+	public boolean isLocked() {
+		return false; //notSupportedException
+	}
+
+	@Override
+	public void waitNode() {
+		// TODO Auto-generated method stub
+		return;
+	}
+
+	@Override
+	public void lockNode() {
+		// TODO Auto-generated method stub
+		//notSupportedException
+	}
+
+	@Override
+	public void unlockNode() {
+		// TODO Auto-generated method stub
+		//notSupportedException
+	}
+
 	
 }

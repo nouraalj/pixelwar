@@ -27,8 +27,8 @@ public class Tile {
 		Arrays.sort(ys);
 			
 		matrix = new Pixel[(xs[1] - xs[0])+1][(ys[1]- ys[0])+1];
-		System.out.println(xs[0] + " " + xs[1]);
-		System.out.println(ys[0] + " " + ys[1]);
+		//System.out.println(xs[0] + " " + xs[1]);
+		//System.out.println(ys[0] + " " + ys[1]);
 
 		// boucle pour obtenir les pixels contenus entre les 4 coins : 
 		for(int i = xs[0]; i < xs[1]+1; i++) {
@@ -84,6 +84,10 @@ public class Tile {
 			sb.append(p.toString() + " ");
 		}
 		return sb.toString();
+	}
+
+	public Pixel[][] getMatrix() {
+		return matrix;
 	}
 
 }
