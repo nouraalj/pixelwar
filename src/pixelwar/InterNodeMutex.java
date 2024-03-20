@@ -1,30 +1,41 @@
 package pixelwar;
 
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class InterNodeMutex extends InterNode {
-
-	 private ReentrantLock mutex = new ReentrantLock();
+	private ReentrantLock mutex = new ReentrantLock();
+	private Condition notfree = mutex.newCondition();
 	 
-	 public void lockNode() {
-			mutex.lock();
-	}
-		
-	public void unlockNode() {
-			mutex.unlock();
-			mutex.notifyAll();
+	@Override
+	public void lockNode() {
+		mutex.lock();
 	}
 	
+	@Override
+	public void unlockNode() {
+		mutex.unlock();
+		notfree.signalAll();
+		//mutex.notifyAll(); // pas de notifyAll dans la classe ReentrantLock !!
+	}
+	
+	@Override
 	public boolean isLocked() {
 		return mutex.isLocked();
 	}
 	
+	@Override
 	public void waitNode() {
 		try {
-			mutex.wait();
+			notfree.await();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void notifyNode() {
+		notfree.signalAll();
 	}
 
 }

@@ -70,25 +70,26 @@ public class Pixel extends Node {
 
 	@Override
 	public boolean isLocked() {
-		// TODO Auto-generated method stub
-		return false; //notSupportedException
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void waitNode() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();		
 	}
 
 	@Override
 	public void lockNode() {
-		// TODO Auto-generated method stub
-		//notSupportedException
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void unlockNode() {
-		// TODO Auto-generated method stub
-		//notSupportedException
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void notifyNode() {
+		throw new UnsupportedOperationException();		
 	}
 }

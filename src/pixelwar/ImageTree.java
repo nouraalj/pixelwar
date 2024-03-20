@@ -5,10 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public abstract class ImageTree{
-	protected Node root; // racine de l'arbre
-    protected int N; // dimension du côté de l'image
-    protected int h; // hauteur de l'arbre
-    protected Matrix matrix = null; // matrice de représentation de l'image
+	private Node root; // racine de l'arbre
+    private int N; // dimension du côté de l'image
+    private int h; // hauteur de l'arbre
+    private Matrix matrix = null; // matrice de représentation de l'image
     
     public ImageTree(int N) {
     	if(N < 1 || Utils.isPowerOf2(N) == false) {
@@ -22,7 +22,6 @@ public abstract class ImageTree{
     	}
     	else {
     		root = createInterNode();
-    		//System.out.println("HAUTEUR : " + h);
     		//  paramètres : racine, hauteur, tmpid, poids, xmin, ymin, xmax, ymax
     		createTree((InterNode) root, h, 0, 1, 1, N, 1, N);
     	}
@@ -30,7 +29,7 @@ public abstract class ImageTree{
     
     
     /* Retourne la racine de l'arbre */
-    public Node getroot() {
+    public Node getRoot() {
     	return root;
     }
     
@@ -83,7 +82,9 @@ public abstract class ImageTree{
     
     /* Retrouve un pixel dans l'arbre à partir de son identifiant */
 	public Pixel findPixel(int id) {
-		if(this.N == 1) {
+		if(id < 0 || id >= N*N) { // cas où l'identifiant ne peut pas être présent dans l'arbre
+			return null;
+		} else if(this.N == 1) {
 			return (Pixel)this.root;
 		}
 		
@@ -109,7 +110,9 @@ public abstract class ImageTree{
 	
 	/* Retrouve un pixel dans l'arbre à partir de ses coordonnées */
 	public Pixel findPixel(int x, int y) {
-		if(this.N == 1) {
+		if(x < 0 || y < 0 || x >= N || y >= N) { // cas où les coordonnées ne peuvent pas être présentes dans l'arbre
+			return null;
+		} else if(this.N == 1) {
 			return (Pixel)this.root;
 		}
 		
@@ -167,6 +170,7 @@ public abstract class ImageTree{
     	return matrix;
     }
     
+    
     public Matrix getMatrix() {
     	if(this.matrix == null) {
     		createMatrix();    		
@@ -177,11 +181,8 @@ public abstract class ImageTree{
     
     /* Affiche la matrice associée à l'arbre */
     public void showMatrix() {
-    	if(this.matrix == null) {
-    		createMatrix();    		
-    	}
+    	Pixel[][] img = this.getMatrix().getImg(); // le getMatrix crée la matrice si elle est vide
     	
-    	Pixel[][] img = this.matrix.getImg();
     	for(int i = 0; i < N; i++) {
     		for(int j = 0; j < N; j++) {
     			if (img[i][j] != null) {
@@ -198,27 +199,27 @@ public abstract class ImageTree{
     
     /* Exporte la matrice représentant l'image dans le fichier de nom filename */
     public void exportImage(String filename) {
-    	//BufferedWriter bw = new BufferedWriter(new FileWriter("resultat.txt"))
-    	try(BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
-    		if(this.matrix == null) {
-        		createMatrix();    		
-        	}
+    	
+    	try(BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {        	
+        	Pixel[][] img = this.getMatrix().getImg(); // le getMatrix crée la matrice si elle est vide
         	
-        	Pixel[][] img = this.matrix.getImg();
         	for(int i = 0; i < N; i++) {
         		for(int j = 0; j < N; j++) {
         			if (img[i][j] != null) {
         				bw.write(String.valueOf(img[i][j].getOwner()));
-        			} else {
+        			}
+        			else {
         				bw.write("(PN)"); // pixel est null
         			}
         			bw.write("\t");
         		}
         		bw.write("\n");
         	}
-		} catch (IOException e) {
+		}
+    	catch (IOException e) {
 			e.printStackTrace();
 		}
+    	
     }
 	
     
@@ -237,75 +238,13 @@ public abstract class ImageTree{
     
     public void putPixel(Pixel p) {
     	p.setOwner(Thread.currentThread().getId());
-    	System.out.println( "Pixel d'id : " + p.getId() + " posé par thread : " + p.getOwner());
+    	System.out.println( "--- thread " + p.getOwner() + " pose le pixel " + p.getId());
     }
+    
     
     // abstract methods
     public abstract Pixel createPixel(int id, int x, int y);
     public abstract InterNode createInterNode();
-
-    
     public abstract void putTile(Tile t);
     
-    
-    /*public String toString() {
-    	StringBuilder s = new StringBuilder();
-    	Node s;
-    	while()
-    } représentation graphique des pixels */ 
 }
-
-
-/*
-    private void createTree(InterNode parent, int depth, int tmpid, int poids, int xmin, int xmax, int ymin, int ymax) {
-    	// cas récursif
-    	if(depth != 1) {
-    		InterNode right = createInterNode();
-    		InterNode left = createInterNode();
-    		parent.set(left, right);
-    		//System.out.println("depth : " + depth + " id du pixel : " + tmpid + " , xmin : " + xmin + " , xmax :" + xmax + " , ymin : " + ymin + " , ymax :" + ymax);
-    		
-    		// si profondeur impaire on modifie ymax et ymin
-    		if (depth%2 == 1) {
-    			// on crée le sous-arbre droit
-    			createTree(right, depth - 1, (tmpid | poids), poids << 1, xmin, xmax, ymin, ymax-((ymax-ymin+1)/2));
-    			//on crée le sous-arbre gauche
-    			createTree(left, depth - 1, tmpid, poids << 1, xmin, xmax , ymin+((ymax-ymin+1)/2), ymax);
-
-    		}
-    		// si profondeur paire on modifie xmax et xmin
-    		else {
-    			// on crée le sous-arbre droit
-    			createTree(right, depth - 1, (tmpid | poids), poids << 1, xmin+((xmax-xmin+1)/2), xmax, ymin, ymax);
-    			//on crée le sous-arbre gauche
-    			createTree(left, depth - 1, tmpid, poids << 1, xmin, xmax-((xmax-xmin+1)/2), ymin, ymax);
-    		}	
-    	}
-    	// cas terminal
-    	else {
-    		//System.out.println("depth : " + depth + " id du pixel : " + tmpid + " , xmin : " + xmin + " , xmax :" + xmax + " , ymin : " + ymin + " , ymax :" + ymax);
-    		// si hauteur de l'arbre paire on modifie ymax et ymin
-    		if (h%2 == 0) {
-        		Pixel pr = createPixel((tmpid | poids), xmax-1, ymin-1);
-        		//System.out.println("pixel droit " + " d' id :" + pr.getId() + ", x : " + pr.getX() + " y : " + pr.getY());
-
-        		Pixel pl = createPixel((tmpid), xmin-1, ymax-1); //xmax/2
-        		//System.out.println("pixel gauche " + " d' id :" + pl.getId() + ", x : " + pl.getX() + " y : " + pl.getY());
-        		parent.setPixel(pl, pr);
-
-    		}
-    		// si hauteur de l'arbre impaire on modifie xmax et xmin
-    		// les deux cas sont les mêmes ???? VERIFIER
-    		
-    		else {
-        		Pixel pr = createPixel((tmpid | poids), xmax-1, ymin-1);
-        		//System.out.println("pixel droit " + " d' id :" + pr.getId() + ", x : " + pr.getX() + " y : " + pr.getY());
-
-    			Pixel pl = createPixel((tmpid), xmin-1, ymax-1);
-        		//System.out.println("pixel gauche " + " d' id :" + pl.getId() + ", x : " + pl.getX() + " y : " + pl.getY());
-        		parent.setPixel(pl, pr);
-    		}
-    		
-    	}
-    }
-*/

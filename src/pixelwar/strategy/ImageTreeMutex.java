@@ -9,12 +9,14 @@ import pixelwar.Tile;
 
 public class ImageTreeMutex extends ImageTree {
     private ReentrantLock mutex = new ReentrantLock();
+    
     public ImageTreeMutex(int N) {
     	super(N);
     }    
 
 	@Override
 	public void putTile(Tile t) {
+		System.out.println("Thread " + Thread.currentThread().getId() + " va poser la tuile " + t.toString());
 		try {
 			mutex.lock();
 			for (Pixel p : t.getPixels()) {
@@ -39,62 +41,3 @@ public class ImageTreeMutex extends ImageTree {
 	}
 	
 }
-
-
-
-
-/*
- * public void createTree(InterNode parent, int depth, int id_parent) {
-	
-	if(depth != 0) {
-		// je pense que le plus simple pour id les pixels,
-		//c'est que les noeuds internes aient aussi un id
-		InterNode right = new InterNode();
-		super.cptIN++;
-		InterNode left = new InterNode();
-		super.cptIN++;
-		parent.set(left, right);
-		//System.out.println("" + cptIN);
-		 //on crée le sous-arbre droit
-		createTree(right, depth - 1, (id_parent*2)+1);
-		 //on crée le sous-arbre gauche
-		createTree(left, depth - 1, (id_parent*2));
-
-	} else {
-		Pixel pl = new Pixel((id_parent*2)); //id à calculer
-		Pixel pr = new Pixel((id_parent*2)+1); //id à calculer
-
-		cptP++;
-		parent.setPixel(pl, pr);
-	}
-}
- */
-
-
-
-
-/*
-public void putPixel(int id) {
-		//convertir en string
-		Node cur = root;
-		int tmpid = Utils.inverser(id);
-       
-       while(!cur.hasPixel()) {
-       	if ((tmpid %2) == 0) {
-       		cur = cur.getLeft();
-       	} else {
-       		cur = cur.getRight();
-       	}
-       	tmpid = tmpid >> 1;
-       	// print tmp
-       }
-       //pixel :
-       if ((tmpid & 2) == 0) {
-       	cur = cur.getLeft();            
-       } else {
-       	cur = cur.getRight();            
-       }
-       ((Pixel)cur).setOwner(Thread.currentThread().getId());
-       System.out.println( "Pixel d'id : " + ((Pixel)cur).getId() + " posé par thread : " + ((Pixel)cur).getOwner());
-}
-*/
