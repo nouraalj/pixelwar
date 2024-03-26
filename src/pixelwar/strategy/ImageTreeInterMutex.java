@@ -176,6 +176,8 @@ public class ImageTreeInterMutex extends ImageTree {
 		
 		// la partie qui pose problème : la vérification du chemin depuis la racine jusqu'au noeud cible
 		cur.lockNode();
+		System.err.println("Je suis " + Thread.currentThread().getId() + " et je lock la racine");
+
 		// suivre le chemin jusqu'à trouver le noeud
 		while(i < length) {
 			if (path[i] == 1) {
@@ -183,8 +185,16 @@ public class ImageTreeInterMutex extends ImageTree {
 			} else {
 				next = cur.getLeft();
 			}
+			try {
+				while (next.isLocked()) {
+					next.waitNode();
+				}
 			next.lockNode();
-			cur.unlockNode();
+			System.out.println("Je suis " + Thread.currentThread().getId() + " et je lock le noeud next : " + path[i] + " d'hauteur : " + i);
+			} finally {
+				cur.unlockNode();
+			}
+
 			cur = next;
 			i++;
 		}
@@ -192,13 +202,17 @@ public class ImageTreeInterMutex extends ImageTree {
 		
 		// verrouiller le noeud cible
 		Node target = cur;
+		System.out.println("Je suis " + Thread.currentThread().getId() + " et le noeud target est locké : "+ target.isLocked());
 		//target.lockNode(); // normalement déjà locké dans la boucle
 		
 		
 		// attendre que tous les sous-noeuds de target soient déverrouillés
+		System.out.println("Je suis " + Thread.currentThread().getId() + " et je vérifie mes sous-arbres: ");
 		Node guilty = verifySubTree(target);
 		while(guilty != null) {
 			guilty = verifySubTree(target);
+			System.out.println("Je suis " + Thread.currentThread().getId() + " et guilty = " + guilty);
+
 			guilty.waitNode();
 		}
 		
@@ -212,6 +226,8 @@ public class ImageTreeInterMutex extends ImageTree {
 		
 		// on libère le noeud
 		target.unlockNode();
+		System.out.println("Je suis " + Thread.currentThread().getId() + " et j'unlock le noeud target");
+
 
 	}
 	

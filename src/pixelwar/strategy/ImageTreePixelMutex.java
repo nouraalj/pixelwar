@@ -32,9 +32,7 @@ public class ImageTreePixelMutex extends ImageTree {
 			p.lockNode();
 			putPixel(p);
 			p.unlockNode();
-			
 		}
 		System.out.println("\n");
 	}
-
 }

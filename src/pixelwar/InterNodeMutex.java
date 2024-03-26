@@ -14,8 +14,10 @@ public class InterNodeMutex extends InterNode {
 	
 	@Override
 	public void unlockNode() {
-		mutex.unlock();
 		notfree.signalAll();
+		mutex.unlock();
+		System.out.println("Je suis " + Thread.currentThread().getId() + " et j' UNLOCK le noeud");
+		
 		//mutex.notifyAll(); // pas de notifyAll dans la classe ReentrantLock !!
 	}
 	

@@ -37,7 +37,7 @@ public class Tile {
 	}
 	
 	
-	public Tile(ImageTree tree) {
+	/*public Tile(ImageTree tree) {
 		
 		int n = tree.getN();
 		Random random = new Random();
@@ -56,6 +56,30 @@ public class Tile {
 
 		for(int i = xs[0]; i < xs[1]+1; i++) {
 			for (int j = ys[0]; j < ys[1]+1; j++) {
+			Pixel p = tree.findPixel(i, j);
+			pixels.add(p);
+			}
+		}
+	}
+	*/
+	
+	public Tile(ImageTree tree, int sizeTile) {
+		
+		int n = tree.getN();
+		Random random = new Random();
+
+		//4 points (on suppose que les tuiles sont des carrés)
+		
+		int x1 = random.nextInt(n);
+		int y1 = random.nextInt(n);
+
+		while( (x1 + sizeTile > n) || (y1+ sizeTile > n)) {
+			x1 = random.nextInt(n);
+			y1 = random.nextInt(n);
+		}
+		
+		for(int i = x1; i < x1+sizeTile; i++) {
+			for (int j = y1; j < y1+sizeTile; j++) {
 			Pixel p = tree.findPixel(i, j);
 			pixels.add(p);
 			}

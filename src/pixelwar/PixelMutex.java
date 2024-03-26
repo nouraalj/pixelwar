@@ -18,8 +18,8 @@ public class PixelMutex extends Pixel {
 	
 	@Override
 	public void unlockNode() {
-		mutex.unlock();
 		notfree.signalAll();
+		mutex.unlock();
 		//mutex.notifyAll(); // pas de méthode notifyAll sur un ReetrantLock !!! ça utilise celle de Object à la place
 	}
 

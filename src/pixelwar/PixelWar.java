@@ -20,7 +20,7 @@ public class PixelWar {
 		ExecutorService pool = Executors.newFixedThreadPool(4);
 		
 		for(int i = 0; i<4; i++) {
-			pool.submit(new DrawTile(new Tile(img), img)); // optimiser le passage des arguments, là on passe 2 fois l'arbre
+			pool.submit(new DrawTile(new Tile(img, 2), img)); // optimiser le passage des arguments, là on passe 2 fois l'arbre
 		}
 		pool.shutdown();
 		pool.awaitTermination(15, TimeUnit.SECONDS); // attend que tous les threads aient terminé
@@ -34,12 +34,13 @@ public class PixelWar {
 	// test des tuiles aléatoires avec stratégie 3
 	public static void main0(String[] args) throws InterruptedException {
 
-		ImageTreePixelMutex img = new ImageTreePixelMutex(16);
+		ImageTreePixelMutex img = new ImageTreePixelMutex(4);
 		
-		ExecutorService pool = Executors.newFixedThreadPool(4);
+		ExecutorService pool = Executors.newFixedThreadPool(2);
 		
 		for(int i = 0; i<10; i++) {
-			pool.submit(new DrawTile(new Tile(img), img));
+			
+			pool.submit(new DrawTile(new Tile(img, 2), img));
 		}
 		
 		pool.shutdown();
@@ -48,6 +49,8 @@ public class PixelWar {
 		String path = "test_strat3.txt";
 		System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
 		img.exportImage(path);
+		
+		
 	}
 	
 	
@@ -59,7 +62,7 @@ public class PixelWar {
 		ExecutorService pool = Executors.newFixedThreadPool(4);
 		
 		for(int i = 0; i<11; i++) {
-			pool.submit(new DrawTile(new Tile(img), img));
+			pool.submit(new DrawTile(new Tile(img, 2), img));
 		}
 		
 		pool.shutdown();
@@ -162,12 +165,12 @@ public class PixelWar {
 	
 	// test des fonctions sur les tuiles
 	public static void main4(String[] args) throws Exception {
-		ImageTreeMutex img = new ImageTreeMutex(4);
+		ImageTreeMutex img = new ImageTreeMutex(16);
 		
 		System.out.println("Test de sortById : \n");
 		
 		for(int i = 0; i<5; i++) {
-			Tile t = new Tile(img);
+			Tile t = new Tile(img, 4);
 			System.out.println("Tuile avant tri par ordre croissant :\n" + t.toString());
 			t = t.sortById();
 			System.out.println("Tuile après tri par ordre croissant :\n" + t.toString());
@@ -184,7 +187,7 @@ public class PixelWar {
 		System.out.println("Test de pathToNode : \n");
 		
 		for(int i = 0; i<5; i++) {
-			Tile t = new Tile(img);
+			Tile t = new Tile(img, 2);
 			System.out.println(t.toString());
 			
 			// calculer le chemin vers le noeud cible et récupérer la longueur de ce chemin
