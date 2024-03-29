@@ -117,6 +117,9 @@ public class Tile {
 		return this;
 	}
 	
+	public int nbPixels() {
+		return pixels.size();
+	}
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -125,5 +128,7 @@ public class Tile {
 		}
 		return sb.toString();
 	}
+	
+	
 
 }
