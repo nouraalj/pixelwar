@@ -3,11 +3,11 @@ package pixelwar;
 import java.awt.Color;
 
 public class Pixel extends Node {
-	protected int id;
-	protected int x;
-	protected int y;
-	protected long ownerT; // thread qui a posé ce pixel en dernier
-	protected Color color;
+	private int id;
+	private int x;
+	private int y;
+	private long ownerT; // thread qui a posé ce pixel en dernier
+	private Color color;
 	
 	public Pixel(int id, int x, int y) {
 		this.id = id;

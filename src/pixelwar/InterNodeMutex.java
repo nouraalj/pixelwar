@@ -14,9 +14,9 @@ public class InterNodeMutex extends InterNode {
 	
 	@Override
 	public void unlockNode() {
-		notfree.signalAll();
+		//notfree.signalAll();
 		mutex.unlock();
-		System.out.println("Je suis " + Thread.currentThread().getId() + " et j' UNLOCK le noeud");
+		System.out.println("Je suis " + Thread.currentThread().getId() + " et j' UNLOCK le noeud : "+ this.getId());
 		
 		//mutex.notifyAll(); // pas de notifyAll dans la classe ReentrantLock !!
 	}
@@ -29,7 +29,9 @@ public class InterNodeMutex extends InterNode {
 	@Override
 	public void waitNode() {
 		try {
+			System.err.println("j'attend");
 			notfree.await();
+			System.err.println("je n'attend plus");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -37,7 +39,10 @@ public class InterNodeMutex extends InterNode {
 	
 	@Override
 	public void notifyNode() {
-		notfree.signalAll();
+		System.out.println("que pasa");
+		//notfree.signalAll();
+		System.err.println("ok pasa");
+
 	}
 
 }

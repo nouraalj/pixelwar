@@ -190,9 +190,11 @@ public class ImageTreeInterMutex extends ImageTree {
 					next.waitNode();
 				}
 			next.lockNode();
-			System.out.println("Je suis " + Thread.currentThread().getId() + " et je lock le noeud next : " + path[i] + " d'hauteur : " + i);
+			System.out.println("Je suis " + Thread.currentThread().getId() + " et je lock le noeud next : " + path[i] + " d'hauteur : " + i + " et d'id : " + next.getId());
 			} finally {
 				cur.unlockNode();
+				System.out.println("Je suis "+ Thread.currentThread().getId() + " et j'unlock le noeud next : " + path[i] + " d'hauteur : " + i + " et d'id : " + next.getId());
+				cur.notifyNode();
 			}
 
 			cur = next;
@@ -202,7 +204,7 @@ public class ImageTreeInterMutex extends ImageTree {
 		
 		// verrouiller le noeud cible
 		Node target = cur;
-		System.out.println("Je suis " + Thread.currentThread().getId() + " et le noeud target est locké : "+ target.isLocked());
+		System.out.println("Je suis " + Thread.currentThread().getId() + " et le noeud "+ target.getId() +" est locké : "+ target.isLocked());
 		//target.lockNode(); // normalement déjà locké dans la boucle
 		
 		
@@ -210,10 +212,12 @@ public class ImageTreeInterMutex extends ImageTree {
 		System.out.println("Je suis " + Thread.currentThread().getId() + " et je vérifie mes sous-arbres: ");
 		Node guilty = verifySubTree(target);
 		while(guilty != null) {
+			System.out.println("Je suis " + Thread.currentThread().getId() + " et guilty = " +  guilty.getId());
+			if(guilty.isLocked()) {
+				guilty.waitNode();
+			}
 			guilty = verifySubTree(target);
-			System.out.println("Je suis " + Thread.currentThread().getId() + " et guilty = " + guilty);
-
-			guilty.waitNode();
+			
 		}
 		
 		
@@ -227,7 +231,8 @@ public class ImageTreeInterMutex extends ImageTree {
 		// on libère le noeud
 		target.unlockNode();
 		System.out.println("Je suis " + Thread.currentThread().getId() + " et j'unlock le noeud target");
-
+		target.notifyNode();
+		System.out.println("Je suis " + Thread.currentThread().getId() + " et je préviens les autres threads");
 
 	}
 	

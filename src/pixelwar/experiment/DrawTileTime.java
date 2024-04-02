@@ -16,6 +16,29 @@ public class DrawTileTime implements Callable<Long> {
 		this.t = t;
 	}
 
+	public DrawTileTime(ImageTree t, int sizeTile) {
+		//construction de la tuile :
+		Tile tile = new Tile(t, sizeTile);
+		
+		this.tile = tile;
+		this.t = t;
+	}
+	
+	
+	 @Override
+	 public Long call() throws Exception {
+		 long debut = System.nanoTime();
+		 
+		 t.putTile(tile);
+
+	     long fin = System.nanoTime();
+
+	     System.out.println("temps :" + (fin - debut) + " ns");
+
+	     return fin - debut;
+	 }
+
+	/*
 	@Override
 	public Long call() throws Exception {
 		long debut = new Date().getTime();
@@ -25,5 +48,5 @@ public class DrawTileTime implements Callable<Long> {
 		System.out.println("temps :" + (fin-debut));
 		return (Long) fin-debut;
 	}
-
+	*/
 }

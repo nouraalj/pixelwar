@@ -9,6 +9,14 @@ public class DrawTile implements Runnable {
 		this.t = t;
 	}
 
+	public DrawTile(ImageTree t, int sizeTile) {
+		//construction de la tuile :
+		Tile tile = new Tile(t, sizeTile);
+		
+		this.tile = tile;
+		this.t = t;
+	}
+	
 	@Override
 	public void run() {
 		t.putTile(tile);

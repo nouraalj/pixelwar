@@ -8,12 +8,41 @@ import java.util.concurrent.TimeUnit;
 
 import pixelwar.DrawTile;
 import pixelwar.Tile;
+import pixelwar.strategy.ImageTreeMutex;
 import pixelwar.strategy.ImageTreePixelMutex;
 
 public class TimeExperiment {
 	 private static int maxSize = 2<<4;
 	 
-	// test de stratégie 2
+	 
+	// test de stratégie 2 avec ImageTreeMutex : 
+	 	public static void main(String[] args) throws InterruptedException, ExecutionException {
+	 		ImageTreeMutex img = null;
+			ExecutorService pool = null;
+			// selon la taille de l'image et le nombre de threads : 
+			
+			// boucle pour le nombre de threads
+		    for (int j = 1; j <= 20; j++) {
+		         // boucle pour les tailles d'image
+		         for (int i = 2; i <= maxSize; i <<= 1) {
+		        	 img = new ImageTreeMutex(i);
+		        	 pool = Executors.newFixedThreadPool(j);
+		        	 Future<Long> result = pool.submit(new DrawTileTime(new Tile(img, 2), img));
+		        	 System.out.println("Résultat pour une taille d'image : " + i + " et " + j + " threads : " + result.get());
+		        	 System.out.println();
+
+		             pool.shutdown();
+		             pool.awaitTermination(15, TimeUnit.SECONDS);
+		                
+		         }
+		    }
+				//String path = "test_strat2.txt";
+				//System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
+				//img.exportImage(path);
+		}
+		
+	 
+	/* test de stratégie 2 avec ImageTreePixelMutex : 
 		public static void main(String[] args) throws InterruptedException, ExecutionException {
 			ImageTreePixelMutex img = null;
 			ExecutorService pool = null;
@@ -36,5 +65,5 @@ public class TimeExperiment {
 			//System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
 			//img.exportImage(path);
 		}
-	
+	*/
 }
