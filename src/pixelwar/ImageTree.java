@@ -238,7 +238,7 @@ public abstract class ImageTree{
     
     public void putPixel(Pixel p) {
     	p.setOwner(Thread.currentThread().getId());
-    	System.out.println( "--- thread " + p.getOwner() + " pose le pixel " + p.getId());
+    	//System.out.println( "--- thread " + p.getOwner() + " pose le pixel " + p.getId());
     }
     
     

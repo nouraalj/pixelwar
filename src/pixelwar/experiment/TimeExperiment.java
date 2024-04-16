@@ -27,7 +27,7 @@ public class TimeExperiment {
 		         for (int i = 2; i <= maxSize; i <<= 1) {
 		        	 img = new ImageTreeMutex(i);
 		        	 pool = Executors.newFixedThreadPool(j);
-		        	 Future<Long> result = pool.submit(new DrawTileTime(new Tile(img, 2), img));
+		        	 Future<Long> result = pool.submit(new DrawTileTime(img,2));
 		        	 System.out.println("Résultat pour une taille d'image : " + i + " et " + j + " threads : " + result.get());
 		        	 System.out.println();
 
@@ -36,6 +36,23 @@ public class TimeExperiment {
 		                
 		         }
 		    }
+		    
+		    img = new ImageTreeMutex(8);
+		    pool = Executors.newFixedThreadPool(20);
+		    for (int j = 1; j <= 8; j++) {
+		         // boucle pour les tailles d'images
+		    	int i = 0;
+		    	while (i< 30) {
+		    		Future<Long> result = pool.submit(new DrawTileTime(img,j));
+		    		System.out.println("Résultat pour une taille d'image : 32*32 " + " taille de tuile : " + j + " et " + 20 + " threads : " + result.get());
+		        	System.out.println();
+		    		i++;
+		    	}
+		                
+		        
+		    }
+		    pool.shutdown();
+		    pool.awaitTermination(15, TimeUnit.SECONDS);
 				//String path = "test_strat2.txt";
 				//System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
 				//img.exportImage(path);

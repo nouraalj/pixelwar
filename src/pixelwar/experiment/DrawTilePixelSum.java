@@ -1,24 +1,31 @@
 package pixelwar.experiment;
 
-import java.util.concurrent.Callable;
+import java.util.Map;
+
 
 import pixelwar.ImageTree;
 import pixelwar.Tile;
 
-public class DrawTilePixelSum implements Callable<Integer> {
+public class DrawTilePixelSum implements Runnable {
 	private final Tile tile;
 	private final ImageTree t;
+	private final Map<Integer, Integer> map;
 	
-	public DrawTilePixelSum(Tile tile, ImageTree t) {
+	public DrawTilePixelSum(ImageTree t, int sizeTile, Map<Integer, Integer> map) {
 		/*id (tuile) pixel à poser*/
+		Tile tile = new Tile(t, sizeTile);
 		this.tile = tile;
 		this.t = t;
+		this.map = map;
 	}
 
 	@Override
-	public Integer call() throws Exception {
+	public void run(){
 		t.putTile(tile);
 		Integer pixelPut = tile.nbPixels();
-		return pixelPut;
+		Integer tmp = map.putIfAbsent((int) Thread.currentThread().getId(), pixelPut);
+		if (tmp != null) {
+			map.put((int) Thread.currentThread().getId(), tmp+pixelPut);
+		}
 	}
 }

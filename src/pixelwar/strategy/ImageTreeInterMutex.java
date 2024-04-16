@@ -186,15 +186,12 @@ public class ImageTreeInterMutex extends ImageTree {
 				next = cur.getLeft();
 			}
 			try {
-				while (next.isLocked()) {
-					next.waitNode();
-				}
-			next.lockNode();
-			System.out.println("Je suis " + Thread.currentThread().getId() + " et je lock le noeud next : " + path[i] + " d'hauteur : " + i + " et d'id : " + next.getId());
+				next.lockNode();
+				System.out.println("Je suis " + Thread.currentThread().getId() + " et je lock le noeud next : " + path[i] + " d'hauteur : " + i + " et d'id : " + next.getId());
 			} finally {
 				cur.unlockNode();
 				System.out.println("Je suis "+ Thread.currentThread().getId() + " et j'unlock le noeud next : " + path[i] + " d'hauteur : " + i + " et d'id : " + next.getId());
-				cur.notifyNode();
+				//cur.notifyNode();
 			}
 
 			cur = next;
@@ -213,11 +210,9 @@ public class ImageTreeInterMutex extends ImageTree {
 		Node guilty = verifySubTree(target);
 		while(guilty != null) {
 			System.out.println("Je suis " + Thread.currentThread().getId() + " et guilty = " +  guilty.getId());
-			if(guilty.isLocked()) {
-				guilty.waitNode();
-			}
+			guilty.lockNode();
+			guilty.unlockNode();
 			guilty = verifySubTree(target);
-			
 		}
 		
 		
@@ -231,7 +226,7 @@ public class ImageTreeInterMutex extends ImageTree {
 		// on libère le noeud
 		target.unlockNode();
 		System.out.println("Je suis " + Thread.currentThread().getId() + " et j'unlock le noeud target");
-		target.notifyNode();
+		//target.notifyNode();
 		System.out.println("Je suis " + Thread.currentThread().getId() + " et je préviens les autres threads");
 
 	}
