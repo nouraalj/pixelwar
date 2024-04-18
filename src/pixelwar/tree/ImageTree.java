@@ -1,8 +1,12 @@
-package pixelwar;
+package pixelwar.tree;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import pixelwar.Matrix;
+import pixelwar.Tile;
+import pixelwar.Utils;
 
 public abstract class ImageTree{
 	private Node root; // racine de l'arbre
@@ -245,6 +249,6 @@ public abstract class ImageTree{
     // abstract methods
     public abstract Pixel createPixel(int id, int x, int y);
     public abstract InterNode createInterNode();
-    public abstract void putTile(Tile t);
+    public abstract Long putTile(Tile t);
     
 }

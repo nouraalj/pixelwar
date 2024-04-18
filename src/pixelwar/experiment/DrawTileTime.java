@@ -3,8 +3,8 @@ package pixelwar.experiment;
 import java.util.Date;
 import java.util.concurrent.Callable;
 
-import pixelwar.ImageTree;
 import pixelwar.Tile;
+import pixelwar.tree.ImageTree;
 
 public class DrawTileTime implements Callable<Long> {
 	private final Tile tile;
@@ -28,26 +28,6 @@ public class DrawTileTime implements Callable<Long> {
 	
 	 @Override
 	 public Long call() throws Exception {
-		 long debut = System.nanoTime();
-		 
-		 t.putTile(tile);
-
-	     long fin = System.nanoTime();
-
-	     //System.out.println("temps :" + (fin - debut) + " ns");
-
-	     return fin - debut;
+	     return t.putTile(tile);
 	 }
-
-	/*
-	@Override
-	public Long call() throws Exception {
-		long debut = new Date().getTime();
-		
-		t.putTile(tile);
-		long fin = new Date().getTime();
-		System.out.println("temps :" + (fin-debut));
-		return (Long) fin-debut;
-	}
-	*/
 }

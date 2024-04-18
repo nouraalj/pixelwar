@@ -1,5 +1,7 @@
 package pixelwar;
 
+import pixelwar.tree.Pixel;
+
 public class Matrix {
 	private int sizeM; // dimension du côté de la matrice
 	private Pixel[][] img;

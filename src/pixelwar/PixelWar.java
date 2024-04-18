@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import pixelwar.strategy.ImageTreeInterMutex;
 import pixelwar.strategy.ImageTreeMutex;
 import pixelwar.strategy.ImageTreePixelMutex;
+import pixelwar.tree.Pixel;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -15,7 +16,7 @@ public class PixelWar {
 	
 
 	// test de stratégie 2
-	public static void main(String[] args) throws InterruptedException {
+	public static void main0(String[] args) throws InterruptedException {
 		ImageTreeInterMutex img = new ImageTreeInterMutex(4);
 		ExecutorService pool = Executors.newFixedThreadPool(4);
 		
@@ -32,7 +33,7 @@ public class PixelWar {
 	
 	
 	// test des tuiles aléatoires avec stratégie 3
-	public static void main0(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException {
 
 		ImageTreePixelMutex img = new ImageTreePixelMutex(4);
 		

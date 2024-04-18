@@ -1,4 +1,4 @@
-package pixelwar;
+package pixelwar.tree;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;

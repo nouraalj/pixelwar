@@ -2,10 +2,10 @@ package pixelwar.strategy;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-import pixelwar.ImageTree;
-import pixelwar.InterNode;
-import pixelwar.Pixel;
 import pixelwar.Tile;
+import pixelwar.tree.ImageTree;
+import pixelwar.tree.InterNode;
+import pixelwar.tree.Pixel;
 
 public class ImageTreeMutex extends ImageTree {
     private ReentrantLock mutex = new ReentrantLock();
@@ -15,14 +15,16 @@ public class ImageTreeMutex extends ImageTree {
     }    
 
 	@Override
-	public void putTile(Tile t) {
-		System.out.println("Thread " + Thread.currentThread().getId() + " va poser la tuile " + t.toString());
+	public Long putTile(Tile t) {
+		//System.out.println("Thread " + Thread.currentThread().getId() + " va poser la tuile " + t.toString());
 		try {
+			long debut = System.nanoTime();
 			mutex.lock();
+			long fin = System.nanoTime();
 			for (Pixel p : t.getPixels()) {
 				putPixel(p);
 			}
-			System.out.println("\n");
+			return fin - debut;
 		} finally {
 			mutex.unlock();
 		}

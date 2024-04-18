@@ -1,4 +1,4 @@
-package pixelwar;
+package pixelwar.tree;
 
 public class InterNode extends Node {
 	private int id;

@@ -1,4 +1,4 @@
-package pixelwar;
+package pixelwar.tree;
 
 import java.awt.Color;
 

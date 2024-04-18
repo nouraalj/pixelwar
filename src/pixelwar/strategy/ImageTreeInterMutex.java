@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pixelwar.ImageTree;
-import pixelwar.InterNode;
-import pixelwar.InterNodeMutex;
-import pixelwar.Node;
-import pixelwar.Pixel;
-import pixelwar.PixelMutex;
 import pixelwar.Tile;
+import pixelwar.tree.ImageTree;
+import pixelwar.tree.InterNode;
+import pixelwar.tree.InterNodeMutex;
+import pixelwar.tree.Node;
+import pixelwar.tree.Pixel;
+import pixelwar.tree.PixelMutex;
 
 public class ImageTreeInterMutex extends ImageTree {
 	
@@ -159,8 +159,8 @@ public class ImageTreeInterMutex extends ImageTree {
 	
 
 	@Override
-	public void putTile(Tile t) {
-		System.out.println("Thread " + Thread.currentThread().getId() + " va poser la tuile " + t.toString());
+	public Long putTile(Tile t) {
+		//System.out.println("Thread " + Thread.currentThread().getId() + " va poser la tuile " + t.toString());
 		
 		// calculer le chemin vers le noeud cible et récupérer la longueur de ce chemin
 		Map<Integer, byte[]> path_ = pathToNode(t);
@@ -174,9 +174,9 @@ public class ImageTreeInterMutex extends ImageTree {
 		Node next = null;
 		int i = 0;
 		
-		// la partie qui pose problème : la vérification du chemin depuis la racine jusqu'au noeud cible
-		cur.lockNode();
-		System.err.println("Je suis " + Thread.currentThread().getId() + " et je lock la racine");
+
+		long debut = System.nanoTime();
+		cur.lockNode(); // verrouillage de la racine		System.err.println("Je suis " + Thread.currentThread().getId() + " et je lock la racine");
 
 		// suivre le chemin jusqu'à trouver le noeud
 		while(i < length) {
@@ -187,10 +187,10 @@ public class ImageTreeInterMutex extends ImageTree {
 			}
 			try {
 				next.lockNode();
-				System.out.println("Je suis " + Thread.currentThread().getId() + " et je lock le noeud next : " + path[i] + " d'hauteur : " + i + " et d'id : " + next.getId());
+				//System.out.println("Je suis " + Thread.currentThread().getId() + " et je lock le noeud next : " + path[i] + " d'hauteur : " + i + " et d'id : " + next.getId());
 			} finally {
 				cur.unlockNode();
-				System.out.println("Je suis "+ Thread.currentThread().getId() + " et j'unlock le noeud next : " + path[i] + " d'hauteur : " + i + " et d'id : " + next.getId());
+				//System.out.println("Je suis "+ Thread.currentThread().getId() + " et j'unlock le noeud next : " + path[i] + " d'hauteur : " + i + " et d'id : " + next.getId());
 				//cur.notifyNode();
 			}
 
@@ -201,20 +201,20 @@ public class ImageTreeInterMutex extends ImageTree {
 		
 		// verrouiller le noeud cible
 		Node target = cur;
-		System.out.println("Je suis " + Thread.currentThread().getId() + " et le noeud "+ target.getId() +" est locké : "+ target.isLocked());
+		//System.out.println("Je suis " + Thread.currentThread().getId() + " et le noeud "+ target.getId() +" est locké : "+ target.isLocked());
 		//target.lockNode(); // normalement déjà locké dans la boucle
 		
 		
 		// attendre que tous les sous-noeuds de target soient déverrouillés
-		System.out.println("Je suis " + Thread.currentThread().getId() + " et je vérifie mes sous-arbres: ");
+		//System.out.println("Je suis " + Thread.currentThread().getId() + " et je vérifie mes sous-arbres: ");
 		Node guilty = verifySubTree(target);
 		while(guilty != null) {
-			System.out.println("Je suis " + Thread.currentThread().getId() + " et guilty = " +  guilty.getId());
+			//System.out.println("Je suis " + Thread.currentThread().getId() + " et guilty = " +  guilty.getId());
 			guilty.lockNode();
 			guilty.unlockNode();
 			guilty = verifySubTree(target);
 		}
-		
+		long fin = System.nanoTime();
 		
 		// une fois que tous les noeuds sont libres on pose notre tuile
 		List<Pixel> pixels = t.getPixels();
@@ -225,10 +225,11 @@ public class ImageTreeInterMutex extends ImageTree {
 		
 		// on libère le noeud
 		target.unlockNode();
-		System.out.println("Je suis " + Thread.currentThread().getId() + " et j'unlock le noeud target");
+		//System.out.println("Je suis " + Thread.currentThread().getId() + " et j'unlock le noeud target");
 		//target.notifyNode();
-		System.out.println("Je suis " + Thread.currentThread().getId() + " et je préviens les autres threads");
+		//System.out.println("Je suis " + Thread.currentThread().getId() + " et je préviens les autres threads");
 
+		return fin - debut;
 	}
 	
 	

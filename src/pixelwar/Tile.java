@@ -5,9 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import pixelwar.tree.ImageTree;
+import pixelwar.tree.Pixel;
+
 public class Tile {
 	private List<Pixel> pixels = new ArrayList<>();	// liste des pixels contenus dans la tuile
 	
+	/*
 	public Tile(int n, Matrix m) {
 		Random random = new Random();
 		
@@ -35,6 +39,7 @@ public class Tile {
 			}
 		}
 	}
+	*/
 	
 	
 	/*public Tile(ImageTree tree) {
@@ -67,6 +72,7 @@ public class Tile {
 		
 		int n = tree.getN();
 		Random random = new Random();
+		
 
 		//4 points (on suppose que les tuiles sont des carrés)
 		
@@ -84,6 +90,7 @@ public class Tile {
 			pixels.add(p);
 			}
 		}
+		
 	}
 	
 	

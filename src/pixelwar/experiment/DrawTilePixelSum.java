@@ -2,9 +2,8 @@ package pixelwar.experiment;
 
 import java.util.Map;
 
-
-import pixelwar.ImageTree;
 import pixelwar.Tile;
+import pixelwar.tree.ImageTree;
 
 public class DrawTilePixelSum implements Runnable {
 	private final Tile tile;

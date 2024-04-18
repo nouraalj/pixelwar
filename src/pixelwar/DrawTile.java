@@ -1,5 +1,7 @@
 package pixelwar;
 
+import pixelwar.tree.ImageTree;
+
 public class DrawTile implements Runnable {
 	private final Tile tile;
 	private final ImageTree t;
