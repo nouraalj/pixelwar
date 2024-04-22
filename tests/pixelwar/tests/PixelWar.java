@@ -1,12 +1,15 @@
-package pixelwar;
+package pixelwar.tests;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import pixelwar.drawing.DrawTile;
+import pixelwar.drawing.Tile;
 import pixelwar.strategy.ImageTreeInterMutex;
 import pixelwar.strategy.ImageTreeMutex;
 import pixelwar.strategy.ImageTreePixelMutex;
 import pixelwar.tree.Pixel;
+import pixelwar.utils.Utils;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -21,7 +24,7 @@ public class PixelWar {
 		ExecutorService pool = Executors.newFixedThreadPool(4);
 		
 		for(int i = 0; i<4; i++) {
-			pool.submit(new DrawTile(new Tile(img, 2), img)); // optimiser le passage des arguments, là on passe 2 fois l'arbre
+			pool.submit(new DrawTile(img, 2));
 		}
 		pool.shutdown();
 		pool.awaitTermination(15, TimeUnit.SECONDS); // attend que tous les threads aient terminé
@@ -41,7 +44,7 @@ public class PixelWar {
 		
 		for(int i = 0; i<10; i++) {
 			
-			pool.submit(new DrawTile(new Tile(img, 2), img));
+			pool.submit(new DrawTile(img, 2));
 		}
 		
 		pool.shutdown();
@@ -63,7 +66,7 @@ public class PixelWar {
 		ExecutorService pool = Executors.newFixedThreadPool(4);
 		
 		for(int i = 0; i<11; i++) {
-			pool.submit(new DrawTile(new Tile(img, 2), img));
+			pool.submit(new DrawTile(img, 2));
 		}
 		
 		pool.shutdown();

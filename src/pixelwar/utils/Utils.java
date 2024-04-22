@@ -1,4 +1,4 @@
-package pixelwar;
+package pixelwar.utils;
 
 public  class Utils {
 

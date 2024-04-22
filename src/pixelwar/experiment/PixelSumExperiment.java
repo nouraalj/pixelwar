@@ -8,8 +8,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import pixelwar.strategy.ImageTreeMutex;
+import pixelwar.tree.ImageTree;
 
 public class PixelSumExperiment {
 
@@ -19,31 +21,31 @@ public class PixelSumExperiment {
 	 
 	// test de stratégie 2 avec ImageTreeMutex : 
 	 	public static void main(String[] args) throws InterruptedException, ExecutionException {
-	 		ImageTreeMutex img = null;
+	 		ImageTree img = null;
 			ExecutorService pool = null;
+			AtomicInteger cpt = null;
+		    
+			// On fait varier la taille de l'arbre
+			System.out.println("On fait varier la taille de l'arbre");
 			
-			// selon la taille de l'image et le nombre de threads : 
-			
-			// boucle pour le nombre de threads
-		    for (int j = 1; j <= 20; j++) {
-		         // boucle pour les tailles d'image
-		         for (int i = 2; i <= maxSize; i <<= 1) {
-		        	 Map<Integer, Integer> map = new HashMap<>();
-		        	 img = new ImageTreeMutex(i);
-		        	 pool = Executors.newFixedThreadPool(j);
-		        	 pool.submit(new DrawTilePixelSum(img, 2, map));
-
-		             pool.shutdown();
-		             pool.awaitTermination(15, TimeUnit.SECONDS);
-		             for(Entry<Integer, Integer> k : map.entrySet()) {
-		            	 System.out.print(" thread :" + k.getKey() + " pixels posés : " + k.getValue()+ " ");
-		             }
-		         }
+		    int tailleTuile = 2;
+		    int nbThreads = 20;
+		    pool = Executors.newFixedThreadPool(nbThreads);
+		    
+	    	for (int tailleArbre = 2; tailleArbre <= maxSize; tailleArbre <<= 1) { // on commence à 4
+	        	img = new ImageTreeMutex(tailleArbre);
+	        	cpt = new AtomicInteger();
+	        	
+		    	for(int j = 0; j < 100 ; j++) {
+		    		pool.submit(new DrawTilePixelSum(img, tailleTuile, cpt));
+		    	}  
 		    }
-
-				//String path = "test_strat2.txt";
-				//System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
-				//img.exportImage(path);
-		}
+	    	
+		    pool.shutdownNow();
+		    pool.awaitTermination(5, TimeUnit.SECONDS);
+			//String path = "test_strat2.txt";
+			//System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
+			//img.exportImage(path);
+	}
 		
 }

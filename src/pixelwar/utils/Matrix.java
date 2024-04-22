@@ -1,4 +1,4 @@
-package pixelwar;
+package pixelwar.utils;
 
 import pixelwar.tree.Pixel;
 

@@ -4,9 +4,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import pixelwar.Matrix;
-import pixelwar.Tile;
-import pixelwar.Utils;
+import pixelwar.drawing.Tile;
+import pixelwar.utils.Matrix;
+import pixelwar.utils.Utils;
 
 public abstract class ImageTree{
 	private Node root; // racine de l'arbre

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pixelwar.Tile;
+import pixelwar.drawing.Tile;
 import pixelwar.tree.ImageTree;
 import pixelwar.tree.InterNode;
 import pixelwar.tree.InterNodeMutex;

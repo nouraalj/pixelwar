@@ -2,7 +2,7 @@ package pixelwar.strategy;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-import pixelwar.Tile;
+import pixelwar.drawing.Tile;
 import pixelwar.tree.ImageTree;
 import pixelwar.tree.InterNode;
 import pixelwar.tree.Pixel;
