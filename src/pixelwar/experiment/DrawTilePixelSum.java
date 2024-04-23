@@ -7,16 +7,25 @@ import pixelwar.drawing.Tile;
 import pixelwar.tree.ImageTree;
 
 public class DrawTilePixelSum implements Runnable {
-	private final Tile tile;
+	//private Tile tile;
+	private int sizeTile;
 	private final ImageTree t;
 	private AtomicInteger cpt;
 	//private final Map<Integer, Integer> map; // sert à enregistrer le nombre de tuiles effectivement posées
 	
 	public DrawTilePixelSum(ImageTree t, int sizeTile, AtomicInteger cpt) {
+		this.t = t;
+		this.sizeTile = sizeTile;
+		this.cpt = cpt;
+	}
+	
+	/*
+	public DrawTilePixelSum(ImageTree t, int sizeTile, AtomicInteger cpt) {
 		this.tile = new Tile(t, sizeTile);
 		this.t = t;
 		this.cpt = cpt;
 	}
+	*/
 	
 	/*
 	public DrawTilePixelSum(ImageTree t, int sizeTile, Map<Integer, Integer> map) {
@@ -28,8 +37,11 @@ public class DrawTilePixelSum implements Runnable {
 
 	@Override
 	public void run(){
-		t.putTile(tile);
-		cpt.incrementAndGet();
+		/* produire des tuiles et les poser tant qu'on est pas interrompu */
+		while(!Thread.currentThread().isInterrupted()) {
+			t.putTile(new Tile(t, sizeTile));
+			cpt.incrementAndGet();
+		}
 	}
 	
 	/*
