@@ -1,23 +1,24 @@
 package pixelwar.tree;
 
+/* Classe de représentation d'un noeud interne de l'arbre */
+
 public class InterNode extends Node {
-	private int id;
-	private static int cpt = 0;
-	private Node left;
-	private Node right;
+	private Node left; // fils gauche
+	private Node right; // fils droit
 		
 	public InterNode() {
 		this.left = null;
 		this.right = null;
-		cpt++;
-		id = cpt;
 	}
 	
+	/* Initialise les enfants du noeuds avec les InterNode left et right */
 	public void set(InterNode left, InterNode right) {
 		this.left = left;
 		this.right = right;
 
 	}
+	
+	/* Initialise les enfants du noeuds avec les pixels left et right */
 	public void setPixel(Pixel left, Pixel right) {
 		this.left = left;
 		this.right = right;
@@ -36,8 +37,9 @@ public class InterNode extends Node {
 		return left instanceof Pixel;
 	}
 	
+	@Override
 	public int getId() {
-		return id;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -64,6 +66,5 @@ public class InterNode extends Node {
 	public void notifyNode() {
 		throw new UnsupportedOperationException();		
 	}
-
 	
 }

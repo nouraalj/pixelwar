@@ -8,6 +8,8 @@ import pixelwar.drawing.Tile;
 import pixelwar.utils.Matrix;
 import pixelwar.utils.Utils;
 
+/* Classe de représentation de l'arbre / de la toile */
+
 public abstract class ImageTree{
 	private Node root; // racine de l'arbre
     private int N; // dimension du côté de l'image
@@ -18,19 +20,26 @@ public abstract class ImageTree{
     	if(N < 1 || Utils.isPowerOf2(N) == false) {
     		throw new IllegalArgumentException("La dimension du côté de l'image doit être une puissance de 2 strictement positive");
     	}
-    	this.N = N;
-    	this.h = Utils.log2int(2*N*N-1);
     	
+    	this.N = N;
+    	this.h = Utils.log2int(2*N*N-1); // calcul de la hauteur de l'arbre nécessaire pour représenter la toile
+    	
+    	/* cas où l'arbre se résume à un seul pixel */
     	if (N == 1) {
     		root = createPixel(0, 0, 0);
     	}
+    	/* cas général */
     	else {
-    		root = createInterNode();
-    		//  paramètres : racine, hauteur, tmpid, poids, xmin, ymin, xmax, ymax
+    		root = createInterNode(); // création de la racine
+    		// paramètres passés pour la construction de l'arbre (dans l'ordre) : racine, hauteur, tmpid, poids, xmin, ymin, xmax, ymax
     		createTree((InterNode) root, h, 0, 1, 1, N, 1, N);
     	}
     }
     
+    /* méthodes abstraites */
+    public abstract Pixel createPixel(int id, int x, int y);
+    public abstract InterNode createInterNode();
+    public abstract Long putTile(Tile t);
     
     /* Retourne la racine de l'arbre */
     public Node getRoot() {
@@ -46,40 +55,35 @@ public abstract class ImageTree{
     	return this.h;
     }
     
-    /* Crée l'arbre de hauteur depth enraciné sous le noeud parent */
+    
+    /* Crée récursivement l'arbre de hauteur depth enraciné sous le noeud parent 
+     * Les autres paramètres servent à numéroter les pixels avec un identifiant hiérarchique et des coordonnées
+     */
     private void createTree(InterNode parent, int depth, int tmpid, int poids, int xmin, int xmax, int ymin, int ymax) {
     	// cas récursif
     	if(depth != 1) {
     		InterNode right = createInterNode();
     		InterNode left = createInterNode();
     		parent.set(left, right);
-    		//System.out.println("depth : " + depth + " id du pixel : " + tmpid + " , xmin : " + xmin + " , xmax :" + xmax + " , ymin : " + ymin + " , ymax :" + ymax);
     		
-    		// si profondeur impaire on modifie ymax et ymin
+    		// construction des sous-arbres (appel récursif)
+    		// calcul des coordonnées : si profondeur impaire on modifie ymax et ymin (divison des zones verticalement)
     		if (depth%2 == 1) {
-    			// on crée le sous-arbre droit
     			createTree(right, depth - 1, (tmpid | poids), poids << 1, xmin, xmax, ymin, ymax-((ymax-ymin+1)/2));
-    			//on crée le sous-arbre gauche
     			createTree(left, depth - 1, tmpid, poids << 1, xmin, xmax , ymin+((ymax-ymin+1)/2), ymax);
-
     		}
-    		// si profondeur paire on modifie xmax et xmin
+    		// si profondeur paire on modifie xmax et xmin (divison des zones horizontalement)
     		else {
-    			// on crée le sous-arbre droit
     			createTree(right, depth - 1, (tmpid | poids), poids << 1, xmin+((xmax-xmin+1)/2), xmax, ymin, ymax);
-    			//on crée le sous-arbre gauche
     			createTree(left, depth - 1, tmpid, poids << 1, xmin, xmax-((xmax-xmin+1)/2), ymin, ymax);
     		}	
     	}
-    	// cas terminal
+    	
+    	// cas terminal : on est arrivé on au niveau des feuilles
     	else {    		
     		Pixel pr = createPixel((tmpid | poids), xmax-1, ymin-1);
     		Pixel pl = createPixel((tmpid), xmin-1, ymax-1);
-    		parent.setPixel(pl, pr);
-    		
-    		//System.out.println("depth : " + depth + " id du pixel : " + tmpid + " , xmin : " + xmin + " , xmax :" + xmax + " , ymin : " + ymin + " , ymax :" + ymax);
-    		//System.out.println("pixel droit " + " d' id :" + pr.getId() + ", x : " + pr.getX() + " y : " + pr.getY());
-    		//System.out.println("pixel gauche " + " d' id :" + pl.getId() + ", x : " + pl.getX() + " y : " + pl.getY());   		
+    		parent.setPixel(pl, pr);  		
     	}
     }
     
@@ -88,12 +92,13 @@ public abstract class ImageTree{
 	public Pixel findPixel(int id) {
 		if(id < 0 || id >= N*N) { // cas où l'identifiant ne peut pas être présent dans l'arbre
 			return null;
-		} else if(this.N == 1) {
+		} else if (this.N == 1) { // cas où l'arbre se résume à un seul pixel
 			return (Pixel)this.root;
 		}
 		
-		Node cur = this.root;
+		Node cur = this.root; // curseur le long d'une branche
 		
+		// suivre le chemin indiqué par l'identifiant hiérarchique
 		while(!cur.hasPixel()) {
 			if ((id %2) == 0) {
 				cur = cur.getLeft();
@@ -102,12 +107,14 @@ public abstract class ImageTree{
 			}
 			id = id >> 1;
 		}
-		// pixel :
+		
+		// niveau pixel :
 		if ((id%2) == 0) {
 			cur = cur.getLeft();            
 		} else {
 			cur = cur.getRight();            
 		}
+		
 		return (Pixel)cur;
 	}
 	
@@ -116,7 +123,7 @@ public abstract class ImageTree{
 	public Pixel findPixel(int x, int y) {
 		if(x < 0 || y < 0 || x >= N || y >= N) { // cas où les coordonnées ne peuvent pas être présentes dans l'arbre
 			return null;
-		} else if(this.N == 1) {
+		} else if (this.N == 1) { // cas où l'arbre se résume à un seul pixel
 			return (Pixel)this.root;
 		}
 		
@@ -129,6 +136,7 @@ public abstract class ImageTree{
 		int ymax = this.N;
 		
 		// cas récursif
+		// à chaque étape on compare l'identifiant du pixel à l'intervalle de coordonnées représentées par chaque sous-arbre (drout et gauche)
     	while(depth != 1) {
     		// si profondeur impaire on regarde les y
     		if (depth%2 == 1) {
@@ -174,7 +182,7 @@ public abstract class ImageTree{
     	return matrix;
     }
     
-    
+    /* Retourne la matrice associée à l'arbre */
     public Matrix getMatrix() {
     	if(this.matrix == null) {
     		createMatrix();    		
@@ -225,30 +233,10 @@ public abstract class ImageTree{
 		}
     	
     }
-	
-    
-    /* Affiche l'arbre récursivement */
-    public static void showTree(Node cur) {
- 		if(cur instanceof InterNode) {
- 		} else {
- 			System.out.println("P : " + ((Pixel)cur).getId());
- 			return;
- 		}
- 		
- 		ImageTree.showTree(((InterNode)cur).getLeft());
- 		ImageTree.showTree(((InterNode)cur).getRight());
-     }
    
     
     public void putPixel(Pixel p) {
     	p.setOwner(Thread.currentThread().getId());
-    	//System.out.println( "--- thread " + p.getOwner() + " pose le pixel " + p.getId());
     }
-    
-    
-    // abstract methods
-    public abstract Pixel createPixel(int id, int x, int y);
-    public abstract InterNode createInterNode();
-    public abstract Long putTile(Tile t);
     
 }

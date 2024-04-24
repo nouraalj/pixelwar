@@ -18,14 +18,23 @@ public class TimeExperiment {
 	 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 	 		ImageTree img = null;
 			ExecutorService pool = null;
+			
+			/* Paramètres des expérimentations */
+			int tailleTuile;
+		    int nbThreads;
+		    int tailleArbre;
+			
+			
+		    
 		    
 			// On fait varier la taille de l'arbre
 			System.out.println("On fait varier la taille de l'arbre");
 			
-		    int tailleTuile = 2;
-		    int nbThreads = 20;
+			/* Paramètres fixes */
+		    tailleTuile = 2;
+		    nbThreads = 20;
 		    
-	    	for (int tailleArbre = 2; tailleArbre <= 512; tailleArbre <<= 1) { // on commence à 4
+	    	for (tailleArbre = 2; tailleArbre <= 512; tailleArbre <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
 	    		pool = Executors.newFixedThreadPool(nbThreads);
 	        	img = new ImageTreeMutex(tailleArbre);
 	        	
@@ -39,17 +48,17 @@ public class TimeExperiment {
 			    
 			    //récupérer le résultat ici
 		    }
-			//String path = "test_strat2.txt";
-			//System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
-			//img.exportImage(path);
 		    
-		    
+	    	
+	    	
+	    	
 		    
 			// On fait varier la taille de la tuile
 			System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 			System.out.println("On fait varier la taiile de la tuile");
 			
-		    int tailleArbre = 16;
+			/* Paramètres fixes */
+		    tailleArbre = 16;
 		    nbThreads = 20;
 		    
 	    	for (tailleTuile = 1; tailleTuile < tailleArbre; tailleTuile++) {
@@ -66,21 +75,20 @@ public class TimeExperiment {
 			    
 			    //récupérer le résultat ici
 		    }
-			//String path = "test_strat2.txt";
-			//System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
-			//img.exportImage(path);
 		    
 		    
 		    
+	    	
 		    
 		    // On fait varier le nombre de threads
  			System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
  			System.out.println("On fait varier le nombre de threads");
  			
+ 			/* Paramètres fixes */
  		    tailleArbre = 32;
  		    tailleTuile = 10;
  		    
- 	    	for (nbThreads  = 1; nbThreads < 250; nbThreads++) { 
+ 	    	for (nbThreads  = 1; nbThreads <= 100; nbThreads++) { 
  	        	img = new ImageTreeMutex(tailleArbre);
  	        	pool = Executors.newFixedThreadPool(nbThreads);
  	        	
@@ -94,8 +102,5 @@ public class TimeExperiment {
  	 		    
  	 		    //récupérer le résultat ici
  		    }
- 			//String path = "test_strat2.txt";
- 			//System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
- 			//img.exportImage(path);
 		}
 }

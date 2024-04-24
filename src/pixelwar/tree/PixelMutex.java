@@ -3,10 +3,12 @@ package pixelwar.tree;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class PixelMutex extends Pixel {
-    private ReentrantLock mutex = new ReentrantLock();
-    private Condition notfree = mutex.newCondition();
+/* Classe de représentation d'un pixel verrouillable */
 
+public class PixelMutex extends Pixel {
+    private ReentrantLock mutex = new ReentrantLock(); // verrou pour l'accès à ce pixel
+    //private Condition notfree = mutex.newCondition();
+    
 	public PixelMutex(int id, int x, int y) {
 		super(id, x, y);
 	}
@@ -18,9 +20,8 @@ public class PixelMutex extends Pixel {
 	
 	@Override
 	public void unlockNode() {
-		notfree.signalAll();
+		//notfree.signalAll();
 		mutex.unlock();
-		//mutex.notifyAll(); // pas de méthode notifyAll sur un ReetrantLock !!! ça utilise celle de Object à la place
 	}
 
 	@Override
@@ -28,6 +29,7 @@ public class PixelMutex extends Pixel {
 		return mutex.isLocked();
 	}
 	
+	/*
 	@Override
 	public void waitNode() {
 		try {
@@ -36,9 +38,12 @@ public class PixelMutex extends Pixel {
 			e.printStackTrace();
 		}
 	}
+	*/
 	
+	/*
 	@Override
 	public void notifyNode() {
 		notfree.signalAll();
 	}
+	*/
 }

@@ -3,9 +3,11 @@ package pixelwar.tree;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+/* Classe de représentation d'un noeud interne  verrouillable */
+
 public class InterNodeMutex extends InterNode {
 	private ReentrantLock mutex = new ReentrantLock();
-	private Condition notfree = mutex.newCondition();
+	//private Condition notfree = mutex.newCondition();
 	 
 	@Override
 	public void lockNode() {
@@ -16,9 +18,6 @@ public class InterNodeMutex extends InterNode {
 	public void unlockNode() {
 		//notfree.signalAll();
 		mutex.unlock();
-		System.out.println("Je suis " + Thread.currentThread().getId() + " et j' UNLOCK le noeud : "+ this.getId());
-		
-		//mutex.notifyAll(); // pas de notifyAll dans la classe ReentrantLock !!
 	}
 	
 	@Override
@@ -26,23 +25,21 @@ public class InterNodeMutex extends InterNode {
 		return mutex.isLocked();
 	}
 	
+	/*
 	@Override
 	public void waitNode() {
 		try {
-			System.err.println("j'attend");
 			notfree.await();
-			System.err.println("je n'attend plus");
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
+	*/
 	
+	/*
 	@Override
 	public void notifyNode() {
-		System.out.println("que pasa");
-		//notfree.signalAll();
-		System.err.println("ok pasa");
-
+		notfree.signalAll();
 	}
-
+	*/
 }

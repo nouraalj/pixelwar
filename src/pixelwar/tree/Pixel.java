@@ -2,10 +2,12 @@ package pixelwar.tree;
 
 import java.awt.Color;
 
+/* Classe de représentation d'un pixel de l'arbre */
+
 public class Pixel extends Node {
-	private int id;
-	private int x;
-	private int y;
+	private int id; // identifiant hiérarchique du pixel
+	private int x; // ordonnée du pixel
+	private int y; // abscisse du pixel
 	private long ownerT; // thread qui a posé ce pixel en dernier
 	private Color color;
 	
@@ -17,6 +19,7 @@ public class Pixel extends Node {
 		color = Color.WHITE;
 	}
 	
+	@Override
 	public int getId() {
 		return this.id;
 	}
@@ -60,6 +63,7 @@ public class Pixel extends Node {
 		return this.color;
 	}
 	
+	/* Retourne true si le pixel a les mêmes coordonnées que le pixel passé en paramètre */
 	public boolean sameCoordinates(int x, int y) {
 		return (this.x == x && this.y == y) ? true : false;
 	}
