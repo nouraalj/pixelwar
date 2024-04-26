@@ -1,29 +1,49 @@
 package pixelwar.experiment;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import pixelwar.strategy.ImageTreeInterMutex;
 import pixelwar.strategy.ImageTreeMutex;
+import pixelwar.strategy.ImageTreePixelMutex;
 import pixelwar.tree.ImageTree;
+import pixelwar.utils.Utils;
 
 public class PixelSumExperiment {
 	private static final Object mutex = new Object();
 	 
 	 	public static void main(String[] args) throws InterruptedException, ExecutionException {
-	 		ImageTree img = null;
-			ExecutorService pool = null;
+	 		ImageTree img1 = null;
+	 		ImageTree img2 = null;
+	 		ImageTree img3 = null;
+
+			ExecutorService pool1 = null;
+			ExecutorService pool2 = null;
+			ExecutorService pool3 = null;
 			
-			/* Métrique des expérimentations */
-			AtomicInteger cptGlobal = null; // variable qui compte le nombre de tuiles posées par tous les threads
+			/* Métrique des expérimentations : variable qui compte le nombre de tuiles posées par tous les threads*/
+			AtomicInteger cptGlobal1 = null; 
+			AtomicInteger cptGlobal2 = null; 
+			AtomicInteger cptGlobal3 = null; 
 			
 			/* Paramètres des expérimentations */
 			int tailleTuile; // taille du côté de la tuile
 		    int nbThreads; // nombre de threads du pool
 		    int duration; // durée de l'expérience en millisecondes
 		    int tailleToile; // taille du côté du canvas
+		    
+		    /* fichier de sortie */
+		    String resultPath;
+		    
+		    /* autres variables */
+		    Thread t1, t2, t3;
+		    
 		    
 		    
 		    
@@ -36,44 +56,110 @@ public class PixelSumExperiment {
 		    nbThreads = 20;
 		    duration = 4000;
 		    
-	    	for (tailleToile = 2; tailleToile <= 2048; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
-	    		pool = Executors.newFixedThreadPool(nbThreads);
-	        	img = new ImageTreeMutex(tailleToile);
-	        	cptGlobal = new AtomicInteger();
-	        	
-	        	/* 2 variables pour le code du thread juste en dessous qui a besoin de variables final */
-	        	final ExecutorService poolbis = pool;
-	        	final int durationbis = duration;
-	        	
-	        	/* Démarrer un thread qui arrêtera le pool après un certain délai */ 
-	        	Thread t = new Thread(() -> {
-	        		try {
-						Thread.sleep(durationbis);
-					} catch (InterruptedException e) {
-						//e.printStackTrace();
-					}
-	        		synchronized(mutex) {
-						poolbis.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
-					    try {
-							poolbis.awaitTermination(0, TimeUnit.SECONDS); // je sais pas s'il est utile là mais il fait pas de mal
+		    resultPath = "testImgSize_sum.txt";
+		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
+		    	for (tailleToile = 2; tailleToile <= 256; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
+		    		pool1 = Executors.newFixedThreadPool(nbThreads);
+		    		pool2 = Executors.newFixedThreadPool(nbThreads);
+		    		pool3 = Executors.newFixedThreadPool(nbThreads);
+	
+		        	img1 = new ImageTreeMutex(tailleToile);
+		        	img2 = new ImageTreeInterMutex(tailleToile);
+		        	img3 = new ImageTreePixelMutex(tailleToile);
+		        	
+		        	cptGlobal1 = new AtomicInteger();
+		        	cptGlobal2 = new AtomicInteger();
+		        	cptGlobal3 = new AtomicInteger();
+		        	
+		        	/* variables pour le code des threads juste en dessous qui a besoin de variables final */
+		        	final ExecutorService poolbis1 = pool1;
+		        	final ExecutorService poolbis2 = pool2;
+		        	final ExecutorService poolbis3 = pool3;
+		        	final int durationbis = duration;
+		        	
+		        	/* Démarrer des threads qui arrêteront les pools après un certain délai */ 
+		        	t1 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}
-	        	});
-	        	t.start();
-	        	
-	        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
-		    	for(int j = 0; (j < nbThreads) && (!pool.isShutdown()); j++) {
-		    		synchronized(mutex) {
-		    			pool.submit(new DrawTilePixelSum(img, tailleTuile, cptGlobal));
-		    		}
-		    	}
+		        		synchronized(mutex) {
+							poolbis1.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis1.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t1.start();
+		        	
+		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
+			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1));
+			    		}
+			    	}
+			    	t1.join();
+		        	
+		        	t2 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+		        		synchronized(mutex) {
+							poolbis2.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis2.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t2.start();
+		        	
+		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2));
+			    		}
+			    	}
+		        	t2.join();
+		        	
+		        	t3 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+		        		synchronized(mutex) {
+							poolbis3.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis3.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t3.start();
+			    	
+			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3));
+			    		}
+			    	}
+			    	t3.join();
+			    	
+			    	out.write(tailleToile + " " + cptGlobal1.get() + cptGlobal2.get() + cptGlobal3.get() + "\n");
+			    }
 		    	
-		    	t.join();
-		    	// récupérer le réultat ici dans la variable cptGlobal
-		    	System.out.println("nombre de tuiles posées : " + cptGlobal.get());
-		    }
+		    } catch (IOException e) {
+	    		e.printStackTrace();
+	    	}
+		    System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
+		    
+		    
 	    	
 	    	
 	    	
@@ -83,48 +169,112 @@ public class PixelSumExperiment {
 	    	System.out.println("On fait varier la taille de la tuile");
 			
 	    	/* Paramètres fixes */
-	    	tailleToile = 32;
+	    	tailleToile = 16;
 		    nbThreads = 20;
 		    duration = 4000;
 		    
-	    	for (tailleTuile = 2; tailleTuile <= tailleToile; tailleTuile++) {
-	    		pool = Executors.newFixedThreadPool(nbThreads);
-	        	img = new ImageTreeMutex(tailleToile);
-	        	cptGlobal = new AtomicInteger();
-	        	
-	        	/* 2 variables pour le code du thread juste en dessous qui a besoin de variables final */
-	        	final ExecutorService poolbis = pool;
-	        	final int durationbis = duration;
-	        	
-	        	/* Démarrer un thread qui arrêtera le pool après un certain délai */ 
-	        	Thread t = new Thread(() -> {
-	        		try {
-						Thread.sleep(durationbis);
-					} catch (InterruptedException e) {
-						//e.printStackTrace();
-					}
-	        		synchronized(mutex) {
-						poolbis.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
-					    try {
-							poolbis.awaitTermination(0, TimeUnit.SECONDS); // je sais pas s'il est utile là mais il fait pas de mal
+		    resultPath = "testTileSize_sum.txt";
+		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
+		    	for (tailleTuile = 2; tailleTuile <= tailleToile; tailleTuile++) {
+		    		pool1 = Executors.newFixedThreadPool(nbThreads);
+		    		pool2 = Executors.newFixedThreadPool(nbThreads);
+		    		pool3 = Executors.newFixedThreadPool(nbThreads);
+	
+		        	img1 = new ImageTreeMutex(tailleToile);
+		        	img2 = new ImageTreeInterMutex(tailleToile);
+		        	img3 = new ImageTreePixelMutex(tailleToile);
+		        	
+		        	cptGlobal1 = new AtomicInteger();
+		        	cptGlobal2 = new AtomicInteger();
+		        	cptGlobal3 = new AtomicInteger();
+		        	
+		        	/* variables pour le code des threads juste en dessous qui a besoin de variables final */
+		        	final ExecutorService poolbis1 = pool1;
+		        	final ExecutorService poolbis2 = pool2;
+		        	final ExecutorService poolbis3 = pool3;
+		        	final int durationbis = duration;
+		        	
+		        	/* Démarrer des threads qui arrêteront les pools après un certain délai */ 
+		        	t1 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}
-	        	});
-	        	t.start();
-	        	
-	        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
-		    	for(int j = 0; (j < nbThreads) && (!pool.isShutdown()); j++) {
-		    		synchronized(mutex) {
-		    			pool.submit(new DrawTilePixelSum(img, tailleTuile, cptGlobal));
-		    		}
-		    	}
+		        		synchronized(mutex) {
+							poolbis1.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis1.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t1.start();
+		        	
+		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
+			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1));
+			    		}
+			    	}
+			    	t1.join();
+		        	
+		        	t2 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+		        		synchronized(mutex) {
+							poolbis2.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis2.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t2.start();
+		        	
+		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2));
+			    		}
+			    	}
+		        	t2.join();
+		        	
+		        	t3 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+		        		synchronized(mutex) {
+							poolbis3.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis3.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t3.start();
+			    	
+			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3));
+			    		}
+			    	}
+			    	t3.join();
+			    	
+			    	out.write(tailleTuile + " " + cptGlobal1.get() + cptGlobal2.get() + cptGlobal3.get() + "\n");
+			    }
 		    	
-		    	t.join();
-		    	// récupérer le réultat ici dans la variable cptGlobal
-		    	System.out.println("nombre de tuiles posées : " + cptGlobal.get());
-		    }
+		    } catch (IOException e) {
+	    		e.printStackTrace();
+	    	}
+		    System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
 	    	
 	    	
 	    	
@@ -139,45 +289,109 @@ public class PixelSumExperiment {
 	    	tailleTuile = 2;
 		    duration = 4000;
 		    
-	    	for (nbThreads = 1; nbThreads <= 30; nbThreads++) {
-	    		pool = Executors.newFixedThreadPool(nbThreads);
-	        	img = new ImageTreeMutex(tailleToile);
-	        	cptGlobal = new AtomicInteger();
-	        	
-	        	/* 2 variables pour le code du thread juste en dessous qui a besoin de variables final */
-	        	final ExecutorService poolbis = pool;
-	        	final int durationbis = duration;
-	        	
-	        	/* Démarrer un thread qui arrêtera le pool après un certain délai */ 
-	        	Thread t = new Thread(() -> {
-	        		try {
-						Thread.sleep(durationbis);
-					} catch (InterruptedException e) {
-						//e.printStackTrace();
-					}
-	        		synchronized(mutex) {
-						poolbis.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
-					    try {
-							poolbis.awaitTermination(0, TimeUnit.SECONDS); // je sais pas s'il est utile là mais il fait pas de mal
+		    resultPath = "testNbThreads_sum.txt";
+		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
+		    	for (nbThreads = 1; nbThreads <= 20; nbThreads++) {
+		    		pool1 = Executors.newFixedThreadPool(nbThreads);
+		    		pool2 = Executors.newFixedThreadPool(nbThreads);
+		    		pool3 = Executors.newFixedThreadPool(nbThreads);
+	
+		        	img1 = new ImageTreeMutex(tailleToile);
+		        	img2 = new ImageTreeInterMutex(tailleToile);
+		        	img3 = new ImageTreePixelMutex(tailleToile);
+		        	
+		        	cptGlobal1 = new AtomicInteger();
+		        	cptGlobal2 = new AtomicInteger();
+		        	cptGlobal3 = new AtomicInteger();
+		        	
+		        	/* variables pour le code des threads juste en dessous qui a besoin de variables final */
+		        	final ExecutorService poolbis1 = pool1;
+		        	final ExecutorService poolbis2 = pool2;
+		        	final ExecutorService poolbis3 = pool3;
+		        	final int durationbis = duration;
+		        	
+		        	/* Démarrer des threads qui arrêteront les pools après un certain délai */ 
+		        	t1 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}
-	        	});
-	        	t.start();
-	        	
-	        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
-		    	for(int j = 0; (j < nbThreads) && (!pool.isShutdown()); j++) {
-		    		synchronized(mutex) {
-		    			pool.submit(new DrawTilePixelSum(img, tailleTuile, cptGlobal));
-		    		}
-		    	}
+		        		synchronized(mutex) {
+							poolbis1.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis1.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t1.start();
+		        	
+		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
+			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1));
+			    		}
+			    	}
+			    	t1.join();
+		        	
+		        	t2 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+		        		synchronized(mutex) {
+							poolbis2.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis2.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t2.start();
+		        	
+		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2));
+			    		}
+			    	}
+		        	t2.join();
+		        	
+		        	t3 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+		        		synchronized(mutex) {
+							poolbis3.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis3.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t3.start();
+			    	
+			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3));
+			    		}
+			    	}
+			    	t3.join();
+			    	
+			    	out.write(nbThreads + " " + cptGlobal1.get() + cptGlobal2.get() + cptGlobal3.get() + "\n");
+			    }
 		    	
-		    	t.join();
-		    	// récupérer le réultat ici dans la variable cptGlobal
-		    	System.out.println("nombre de tuiles posées : " + cptGlobal.get());
-		    }
-	    	
+		    } catch (IOException e) {
+	    		e.printStackTrace();
+	    	}
+		    System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
+		    	
 	    	
 	    	
 	    	
@@ -191,44 +405,108 @@ public class PixelSumExperiment {
 	    	nbThreads = 5;
 	    	tailleTuile = 2;
 		    
-	    	for (duration = 10; duration <= 10000; duration = duration*2) { // on double la durée à chaque fois
-	    		pool = Executors.newFixedThreadPool(nbThreads);
-	        	img = new ImageTreeMutex(tailleToile);
-	        	cptGlobal = new AtomicInteger();
-	        	
-	        	/* 2 variables pour le code du thread juste en dessous qui a besoin de variables final */
-	        	final ExecutorService poolbis = pool;
-	        	final int durationbis = duration;
-	        	
-	        	/* Démarrer un thread qui arrêtera le pool après un certain délai */ 
-	        	Thread t = new Thread(() -> {
-	        		try {
-						Thread.sleep(durationbis);
-					} catch (InterruptedException e) {
-						//e.printStackTrace();
-					}
-	        		synchronized(mutex) {
-						poolbis.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
-					    try {
-							poolbis.awaitTermination(0, TimeUnit.SECONDS); // je sais pas s'il est utile là mais il fait pas de mal
+	    	resultPath = "testDuration_sum.txt";
+		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
+		    	for (duration = 10; duration <= 10000; duration = duration*2) { // on double la durée à chaque fois
+		    		pool1 = Executors.newFixedThreadPool(nbThreads);
+		    		pool2 = Executors.newFixedThreadPool(nbThreads);
+		    		pool3 = Executors.newFixedThreadPool(nbThreads);
+	
+		        	img1 = new ImageTreeMutex(tailleToile);
+		        	img2 = new ImageTreeInterMutex(tailleToile);
+		        	img3 = new ImageTreePixelMutex(tailleToile);
+		        	
+		        	cptGlobal1 = new AtomicInteger();
+		        	cptGlobal2 = new AtomicInteger();
+		        	cptGlobal3 = new AtomicInteger();
+		        	
+		        	/* variables pour le code des threads juste en dessous qui a besoin de variables final */
+		        	final ExecutorService poolbis1 = pool1;
+		        	final ExecutorService poolbis2 = pool2;
+		        	final ExecutorService poolbis3 = pool3;
+		        	final int durationbis = duration;
+		        	
+		        	/* Démarrer des threads qui arrêteront les pools après un certain délai */ 
+		        	t1 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}
-	        	});
-	        	t.start();
-	        	
-	        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
-		    	for(int j = 0; (j < nbThreads) && (!pool.isShutdown()); j++) {
-		    		synchronized(mutex) {
-		    			pool.submit(new DrawTilePixelSum(img, tailleTuile, cptGlobal));
-		    		}
-		    	}
+		        		synchronized(mutex) {
+							poolbis1.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis1.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t1.start();
+		        	
+		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
+			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1));
+			    		}
+			    	}
+			    	t1.join();
+		        	
+		        	t2 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+		        		synchronized(mutex) {
+							poolbis2.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis2.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t2.start();
+		        	
+		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2));
+			    		}
+			    	}
+		        	t2.join();
+		        	
+		        	t3 = new Thread(() -> {
+		        		try {
+							Thread.sleep(durationbis);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+		        		synchronized(mutex) {
+							poolbis3.shutdownNow(); // arrêter les threads du pool même s'ils n'ont pas terminé
+						    try {
+								poolbis3.awaitTermination(0, TimeUnit.SECONDS);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+		        	});
+		        	t3.start();
+			    	
+			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
+			    		synchronized(mutex) {
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3));
+			    		}
+			    	}
+			    	t3.join();
+			    	
+			    	out.write(duration + " " + cptGlobal1.get() + cptGlobal2.get() + cptGlobal3.get() + "\n");
+			    }
 		    	
-		    	t.join();
-		    	// récupérer le réultat ici dans la variable cptGlobal
-		    	System.out.println("nombre de tuiles posées : " + cptGlobal.get());
-		    }
+		    } catch (IOException e) {
+	    		e.printStackTrace();
+	    	}
+		    System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
 	    	
 	}
 		

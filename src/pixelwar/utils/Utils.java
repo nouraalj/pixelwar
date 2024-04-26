@@ -40,15 +40,20 @@ public  class Utils {
 	    return false;
 	}
 	
-	public static String stats(int x, Long[] arr) {
+	/* retourne une chaîne de caractères contenant des statistiques sur la collection de valeurs passées en paramètre */
+	public static String stats(Long[] arr) {
 		Arrays.sort(arr);
 		int n = arr.length;
 		double q1,median,q3;
+		
+		/* calcul de la médiane */
         if( (n%2) != 0 ){
             median = arr[n/2];
         } else {
             median = ((double)arr[n/2] + (double)arr[(n/2) - 1]) / 2.0;
         }
+        
+        /* calcul des quartiles */
 		if( ((n/2)%2) != 0 ){
             q1 = arr [ ((n/2)/2) ];
             q3 = arr [ (n/2) + ((n/2)/2) ];
@@ -59,7 +64,7 @@ public  class Utils {
             else
                 q3 = ((double)arr[(n/2) + ((n/2)/2)] + (double)arr[(n/2) + ((n/2)/2) + 1]) / 2.0;
         }
-		return x + " " + arr[0] + " " + q1 + " " + median + " " + q3 + " "+ arr[n-1];
+		return arr[0] + " " + q1 + " " + median + " " + q3 + " "+ arr[n-1];
 	}
 
 }
