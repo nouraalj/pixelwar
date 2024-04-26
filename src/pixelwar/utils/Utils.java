@@ -1,5 +1,7 @@
 package pixelwar.utils;
 
+import java.util.Arrays;
+
 public  class Utils {
 
 	/* Calcule le log en base 2 de n et retourne la valeur entière inférieure (ou -1 si non applicable) */
@@ -36,6 +38,28 @@ public  class Utils {
 	        return true;
 	    }
 	    return false;
+	}
+	
+	public static String stats(int x, Long[] arr) {
+		Arrays.sort(arr);
+		int n = arr.length;
+		double q1,median,q3;
+        if( (n%2) != 0 ){
+            median = arr[n/2];
+        } else {
+            median = ((double)arr[n/2] + (double)arr[(n/2) - 1]) / 2.0;
+        }
+		if( ((n/2)%2) != 0 ){
+            q1 = arr [ ((n/2)/2) ];
+            q3 = arr [ (n/2) + ((n/2)/2) ];
+        } else {
+            q1 = ((double)arr[((n/2)/2)] + (double)arr[((n/2)/2) - 1]) / 2.0;
+            if( (n%2) == 0 )
+                q3 = ((double)arr[(n/2) + ((n/2)/2)] + (double)arr[(n/2) + ((n/2)/2) - 1]) / 2.0;
+            else
+                q3 = ((double)arr[(n/2) + ((n/2)/2)] + (double)arr[(n/2) + ((n/2)/2) + 1]) / 2.0;
+        }
+		return x + " " + arr[0] + " " + q1 + " " + median + " " + q3 + " "+ arr[n-1];
 	}
 
 }
