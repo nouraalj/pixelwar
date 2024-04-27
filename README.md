@@ -1,8 +1,6 @@
 
 # Pixel War : France-Espagne saison 2 
 
-Projet réalisé dans le cadre de l'UE Projet SAR du Master SAR de Sorbonne Université.
-
 ## Description
 
 
