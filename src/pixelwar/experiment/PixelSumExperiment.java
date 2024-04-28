@@ -58,7 +58,7 @@ public class PixelSumExperiment {
 		    
 		    resultPath = "testImgSize_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleToile = 2; tailleToile <= 256; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
+		    	for (tailleToile = 2; tailleToile <= 64; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		pool3 = Executors.newFixedThreadPool(nbThreads);
@@ -151,7 +151,7 @@ public class PixelSumExperiment {
 			    	}
 			    	t3.join();
 			    	
-			    	out.write(tailleToile + " " + cptGlobal1.get() + cptGlobal2.get() + cptGlobal3.get() + "\n");
+			    	out.write(tailleToile + " " + cptGlobal1.get() + " " + cptGlobal2.get() + " " + cptGlobal3.get() + "\n");
 			    }
 		    	
 		    } catch (IOException e) {
@@ -175,7 +175,7 @@ public class PixelSumExperiment {
 		    
 		    resultPath = "testTileSize_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleTuile = 2; tailleTuile <= tailleToile; tailleTuile++) {
+		    	for (tailleTuile = 2; tailleTuile <= tailleToile; tailleTuile += 2) {
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		pool3 = Executors.newFixedThreadPool(nbThreads);
@@ -268,7 +268,7 @@ public class PixelSumExperiment {
 			    	}
 			    	t3.join();
 			    	
-			    	out.write(tailleTuile + " " + cptGlobal1.get() + cptGlobal2.get() + cptGlobal3.get() + "\n");
+			    	out.write(tailleTuile + " " + cptGlobal1.get() + " " + cptGlobal2.get() + " " + cptGlobal3.get() + "\n");
 			    }
 		    	
 		    } catch (IOException e) {
@@ -384,7 +384,7 @@ public class PixelSumExperiment {
 			    	}
 			    	t3.join();
 			    	
-			    	out.write(nbThreads + " " + cptGlobal1.get() + cptGlobal2.get() + cptGlobal3.get() + "\n");
+			    	out.write(nbThreads + " " + cptGlobal1.get() + " " + cptGlobal2.get() + " " + cptGlobal3.get() + "\n");
 			    }
 		    	
 		    } catch (IOException e) {
@@ -500,7 +500,7 @@ public class PixelSumExperiment {
 			    	}
 			    	t3.join();
 			    	
-			    	out.write(duration + " " + cptGlobal1.get() + cptGlobal2.get() + cptGlobal3.get() + "\n");
+			    	out.write(duration + " " + cptGlobal1.get() + " " + cptGlobal2.get() + " " + cptGlobal3.get() + "\n");
 			    }
 		    	
 		    } catch (IOException e) {
