@@ -56,7 +56,7 @@ public class PixelSumExperiment {
 		    nbThreads = 20;
 		    duration = 4000;
 		    
-		    resultPath = "testImgSize_sum.txt";
+		    resultPath = "data/pixelSum/testImgSize_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 		    	for (tailleToile = 2; tailleToile <= 64; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
@@ -173,7 +173,7 @@ public class PixelSumExperiment {
 		    nbThreads = 20;
 		    duration = 4000;
 		    
-		    resultPath = "testTileSize_sum.txt";
+		    resultPath = "data/pixelSum/testTileSize_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 		    	for (tailleTuile = 2; tailleTuile <= tailleToile; tailleTuile += 2) {
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
@@ -289,7 +289,7 @@ public class PixelSumExperiment {
 	    	tailleTuile = 2;
 		    duration = 4000;
 		    
-		    resultPath = "testNbThreads_sum.txt";
+		    resultPath = "data/pixelSum/testNbThreads_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 		    	for (nbThreads = 1; nbThreads <= 20; nbThreads++) {
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
@@ -405,7 +405,7 @@ public class PixelSumExperiment {
 	    	nbThreads = 5;
 	    	tailleTuile = 2;
 		    
-	    	resultPath = "testDuration_sum.txt";
+	    	resultPath = "data/pixelSum/testDuration_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 		    	for (duration = 10; duration <= 10000; duration = duration*2) { // on double la durée à chaque fois
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);

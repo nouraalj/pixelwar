@@ -19,7 +19,7 @@ public class Strat2Test {
 		pool.shutdown();
 		pool.awaitTermination(15, TimeUnit.SECONDS);
 		
-		String path = "test_strat2.txt";
+		String path = "data/test/test_strat2.txt";
 		System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
 		img.exportImage(path);
 

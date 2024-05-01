@@ -71,7 +71,7 @@ public class TreeTest {
 		img.showMatrix();
 		
 		System.out.println("\n\nTest de exportImage :");
-		String filename = "essai.txt";
+		String filename = "data/test/essai.txt";
 		img.exportImage(filename);
 		System.out.println("Ouvrir le fichier '" + filename + "' pour voir le résultat de l'export");
 		

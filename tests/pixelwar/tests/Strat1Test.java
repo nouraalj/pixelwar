@@ -20,7 +20,7 @@ public class Strat1Test {
 		pool.shutdown();
 		pool.awaitTermination(3, TimeUnit.SECONDS); // attend que tous les threads aient terminé
 		
-		String path = "test_strat1.txt";
+		String path = "data/test/test_strat1.txt";
 		System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
 		img.exportImage(path);
 

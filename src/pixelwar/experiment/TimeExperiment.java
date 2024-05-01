@@ -3,7 +3,6 @@ package pixelwar.experiment;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -54,7 +53,7 @@ public class TimeExperiment {
 		    Long[] l12 = new Long[100];		    
 		    Long[] l13 = new Long[100];
 		    
-		    resultPath = "testImgSize_time.txt";
+		    resultPath = "data/time/testImgSize_time.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 		    	for (tailleToile = 2; tailleToile <= 512; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
@@ -112,7 +111,7 @@ public class TimeExperiment {
 			Long[] l22 = new Long[100];		    
 			Long[] l23 = new Long[100];
 		    
-			resultPath = "testTileSize_time.txt";
+			resultPath = "data/time/testTileSize_time.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 		    	for (tailleTuile = 1; tailleTuile < tailleToile; tailleTuile += 2) {
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
@@ -210,7 +209,7 @@ public class TimeExperiment {
 		    pool3.awaitTermination(15, TimeUnit.SECONDS);
  		    
  		    /* écriture des résultats */
-	    	resultPath = "testTileVariable_time.txt";
+	    	resultPath = "data/time/testTileVariable_time.txt";
  		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
  		    	for(int i=0; i<tailles.length; i++) {
  		    		out.write(i + " " + Utils.stats(l31[i]) + " " + Utils.stats(l32[i]) + " " + Utils.stats(l33[i]) + "\n");
@@ -238,7 +237,7 @@ public class TimeExperiment {
  		    Long[] l42 = new Long[100];		    
  		    Long[] l43 = new Long[100];
  		    
- 		    resultPath = "testNbThreads_time.txt";
+ 		    resultPath = "data/time/testNbThreads_time.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 	 	    	for (nbThreads = 1; nbThreads <= 20; nbThreads++) { 
 	 	    		pool1 = Executors.newFixedThreadPool(nbThreads);
