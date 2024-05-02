@@ -19,6 +19,7 @@ df_long = pd.melt(df, id_vars=['Image Size'], value_name='Delay')
 
 plt.figure(figsize=(12, 8))  
 sns.set(style="whitegrid")
+# Pour afficher les données aberrantes, enlever showfliers=False
 sns.boxplot(data=df_long, x='Image Size', y='Delay', showfliers=False, medianprops={'linewidth': 2.5})
 plt.xlabel('Taille de l\'image')
 plt.ylabel('Délai d\'attente')

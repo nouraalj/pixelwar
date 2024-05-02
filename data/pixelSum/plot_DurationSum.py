@@ -29,4 +29,4 @@ plt.grid(True)
 plt.savefig("../plot/pixelSum/duration.png")
 
 # À DÉCOMMENTER SI ON VEUT LE GRAPHIQUE À L'EXÉCUTION
-#plt.show()
+plt.show()

@@ -16,7 +16,6 @@ df = pd.DataFrame(delays, columns=[f"Thread {i+1}" for i in range(delays.shape[1
 # Sélectionner uniquement les 20 premières colonnes (pour les 20 premiers threads)
 df_subset = df.iloc[:, :20]
 
-# Définir les étiquettes d'axe x
 x_labels = [f"{i+1}" for i in range(20)]
 
 # Tracer les boîtes à moustaches avec Seaborn
@@ -27,5 +26,6 @@ sns.boxplot(data=df_subset, medianprops={'linewidth': 2.5})  # Épaissir la lign
 plt.xlabel('Nombre de threads')
 plt.ylabel('Délai d\'attente')
 plt.title('Boîte à moustaches du délai d\'attente en fonction du nombre de threads pour la stratégie 1')
-plt.xticks(range(20), x_labels, rotation=45)  # Rotation de 45 degrés pour une meilleure lisibilité
-plt.show()
+plt.xticks(range(20), x_labels, rotation=45)
+# À DÉCOMMENTER SI ON VEUT LE GRAPHIQUE À L'EXÉCUTION
+#plt.show()
