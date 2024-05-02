@@ -26,4 +26,5 @@ plt.ylabel('Délai d\'attente')
 plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de l\'image pour la stratégie 1')
 plt.xticks(rotation=45) 
 plt.savefig("../plot/time/imgSize1.png")
-plt.show()
+# À DÉCOMMENTER SI ON VEUT LE GRAPHIQUE À L'EXÉCUTION
+#plt.show()
