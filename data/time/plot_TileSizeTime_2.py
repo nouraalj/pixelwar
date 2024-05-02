@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Charger les données à partir du fichier
-data = np.loadtxt('testTileSize_time1.txt')
+data = np.loadtxt('testTileSize_time2.txt')
 
 # Séparer les données en taille de l'image et valeurs de délai
 sizes = data[:, 0]  # Première colonne : taille de la tuile
@@ -25,7 +25,7 @@ plt.figure(figsize=(12, 8))  # Taille de l'image : largeur = 12 pouces, hauteur 
 sns.boxplot(data=df_long, x='Tile Size', y='Delay', showfliers=False, medianprops={'linewidth': 2.5})
 plt.xlabel('Taille de la tuile')
 plt.ylabel('Délai d\'attente')
-plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de la tuile pour la stratégie 1')
+plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de la tuile pour la stratégie 2')
 plt.xticks(rotation=45)  # Rotation de 45 degrés pour une meilleure lisibilité
-plt.savefig("../plot/time/tileSize1.png")
+plt.savefig("../plot/time/tileSize2.png")
 plt.show()

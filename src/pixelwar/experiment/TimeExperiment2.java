@@ -9,17 +9,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import pixelwar.strategy.ImageTreeMutex;
+import pixelwar.strategy.ImageTreeInterMutex;
 import pixelwar.tree.ImageTree;
 
-public class TimeExperiment1 {
+
+public class TimeExperiment2 {
 	
 		
 	 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 	 		/* Arbres & pools pour les graphes selon les paramètres à faire varier */
-	 		ImageTree img1 = null;
+	 		ImageTree img2 = null;
 	 		
-			ExecutorService pool1 = null;
+			ExecutorService pool2 = null;
 
 			
 			/* Paramètres des expérimentations */
@@ -39,28 +40,28 @@ public class TimeExperiment1 {
 		    tailleTuile = 2;
 		    nbThreads = 20;
 		    
-		    resultPath = "data/time/testImgSize_time1.txt";
+		    resultPath = "data/time/testImgSize_time2.txt";
 
 
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 		    	for (tailleToile = 2; tailleToile <= 512; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
-		    		pool1 = Executors.newFixedThreadPool(nbThreads);
+		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 	
-		        	img1 = new ImageTreeMutex(tailleToile);
+		        	img2 = new ImageTreeInterMutex(tailleToile);
 		        
 		        	out.write(tailleToile + " ");
 		        			        	
 			    	for(int j = 0; j < 100 ; j++) {
 			    		
-			    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile));
-			    		double res = (double) result1.get();
+			    		Future<Long> result2 = pool2.submit(new DrawTileTime(img2, tailleTuile));
+			    		double res = (double) result2.get();
 			    		out.write(res + " ");		 
 			    		
 			    	} 
 			    	out.write("\n");
 			    	
-			    	pool1.shutdown();
-				    pool1.awaitTermination(15, TimeUnit.SECONDS);
+			    	pool2.shutdown();
+				    pool2.awaitTermination(15, TimeUnit.SECONDS);
 				    
 				    
 			    }
@@ -81,25 +82,25 @@ public class TimeExperiment1 {
 		    nbThreads = 20;
 		 
 		    
-			resultPath = "data/time/testTileSize_time1.txt";
+			resultPath = "data/time/testTileSize_time2.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 		    	for (tailleTuile = 1; tailleTuile < tailleToile; tailleTuile += 2) {
-		    		pool1 = Executors.newFixedThreadPool(nbThreads);
+		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		
-		        	img1 = new ImageTreeMutex(tailleToile);
+		        	img2 = new ImageTreeInterMutex(tailleToile);
 		        	out.write(tailleTuile + " ");
 
 		        	for(int j = 0; j < 100 ; j++) {
 
-			    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile));
-			    		double res = (double) result1.get();
+			    		Future<Long> result2 = pool2.submit(new DrawTileTime(img2, tailleTuile));
+			    		double res = (double) result2.get();
 			    		out.write(res + " ");		 
 			    	}
 			    	
 			    	out.write("\n");
 			    	
-			    	pool1.shutdown();
-				    pool1.awaitTermination(15, TimeUnit.SECONDS);
+			    	pool2.shutdown();
+				    pool2.awaitTermination(15, TimeUnit.SECONDS);
 				    
 			    }
 		    	
@@ -123,15 +124,14 @@ public class TimeExperiment1 {
  		    
  		    // Liste des tailles de tuiles 
  		    int[] tailles = {2, 4, 8, 16, 32, 64, 128};
-
  		    
  			
- 			pool1 = Executors.newFixedThreadPool(nbThreads);
+ 			pool2 = Executors.newFixedThreadPool(nbThreads);
 
 
-        	img1 = new ImageTreeMutex(tailleToile);
+        	img2 = new ImageTreeInterMutex(tailleToile);
         
-	    	resultPath = "data/time/testTileVariable_time1.txt";
+	    	resultPath = "data/time/testTileVariable_time2.txt";
             try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 				// on pose une tuile de chaque taille
 		    	for(int i=0; i<tailles.length; i++) {
@@ -139,8 +139,8 @@ public class TimeExperiment1 {
 		        	out.write(tailles[i] + " ");
 		        	
 			    	for(int j = 0; j<100; j++) {
-		    			Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailles[i]));
-			    		out.write(result1.get() + " ");
+		    			Future<Long> result2 = pool2.submit(new DrawTileTime(img2, tailles[i]));
+			    		out.write(result2.get() + " ");
 		    		}
 			    	out.write("\n");
 		    	}
@@ -149,14 +149,12 @@ public class TimeExperiment1 {
  	    	}
 	    	
 	    	//fermer les pools 
-	    	pool1.shutdown();
-		    pool1.awaitTermination(15, TimeUnit.SECONDS);
+	    	pool2.shutdown();
+		    pool2.awaitTermination(15, TimeUnit.SECONDS);
 		    
  		    
  	
  		    System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
-	
-	    
 		    
 		    
 		    
@@ -169,26 +167,26 @@ public class TimeExperiment1 {
  		    tailleTuile = 4;
  		    
  		    
- 		    resultPath = "data/time/testNbThreads_time1.txt";
+ 		    resultPath = "data/time/testNbThreads_time2.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
 	 	    	for (nbThreads = 1; nbThreads <= 20; nbThreads++) { 
-	 	    		pool1 = Executors.newFixedThreadPool(nbThreads);
+	 	    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		
-		        	img1 = new ImageTreeMutex(tailleToile);
+		        	img2 = new ImageTreeInterMutex(tailleToile);
 	
 		        	out.write(nbThreads + " ");
 
 	 		    	for(int j = 0; j < 100 ; j++) {
-	 		    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile));
-			    		double res = (double) result1.get();
+	 		    		Future<Long> result2 = pool2.submit(new DrawTileTime(img2, tailleTuile));
+			    		double res = (double) result2.get();
 			    		out.write(res + " ");
 	 		    	
 			    	}
 	 		    	
 	 		    	out.write("\n");
 	 		    	
-	 		    	pool1.shutdown();
-				    pool1.awaitTermination(15, TimeUnit.SECONDS);
+	 		    	pool2.shutdown();
+				    pool2.awaitTermination(15, TimeUnit.SECONDS);
 				   
 	 	 		    
 			}

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Charger les données à partir du fichier
-data = np.loadtxt('testNbThreads_time2.txt')
+data = np.loadtxt('testNbThreads_time3.txt')
 
 # Séparer les données en nombre de threads et valeurs de délai
 threads = data[:, 0]  # Première colonne : nombre de threads
@@ -22,7 +22,7 @@ plt.figure(figsize=(10, 6))
 sns.boxplot(data=df_subset, medianprops={'linewidth': 2.5}, showfliers=False)  # Épaissir la ligne de la médiane
 plt.xlabel('Nombre de threads')
 plt.ylabel('Délai d\'attente')
-plt.title('Boîte à moustaches du délai d\'attente en fonction du nombre de threads pour la stratégie 2')
+plt.title('Boîte à moustaches du délai d\'attente en fonction du nombre de threads pour la stratégie 3')
 plt.xticks(range(20), x_labels, rotation=45)
-plt.savefig("../plot/time/nbThreads2.png")
+plt.savefig("../plot/time/nbThreads3.png")
 plt.show()

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Charger les données à partir du fichier
-data = np.loadtxt('testImgSize_time1.txt')
+data = np.loadtxt('testImgSize_time3.txt')
 
 # Séparer les données en taille de l'image et valeurs de délai
 sizes = data[:, 0]  # Première colonne : taille de l'image
@@ -23,7 +23,7 @@ sns.set(style="whitegrid")
 sns.boxplot(data=df_long, x='Image Size', y='Delay', showfliers=False, medianprops={'linewidth': 2.5})
 plt.xlabel('Taille de l\'image')
 plt.ylabel('Délai d\'attente')
-plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de l\'image pour la stratégie 1')
+plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de l\'image pour la stratégie 3')
 plt.xticks(rotation=45) 
-plt.savefig("../plot/time/imgSize1.png")
+plt.savefig("../plot/time/imgSize3.png")
 plt.show()
