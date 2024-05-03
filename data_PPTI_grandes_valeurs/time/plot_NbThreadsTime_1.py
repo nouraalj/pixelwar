@@ -27,5 +27,6 @@ plt.xlabel('Nombre de threads')
 plt.ylabel('Délai d\'attente')
 plt.title('Boîte à moustaches du délai d\'attente en fonction du nombre de threads pour la stratégie 1')
 plt.xticks(range(20), x_labels, rotation=45)
+plt.savefig("../plot/time/nbThreads1.png")
 # À DÉCOMMENTER SI ON VEUT LE GRAPHIQUE À L'EXÉCUTION
 #plt.show()

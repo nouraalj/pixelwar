@@ -29,3 +29,5 @@ plt.title('Boîte à moustaches du délai d\'attente en fonction du nombre de th
 plt.xticks(range(20), x_labels, rotation=45)
 # À DÉCOMMENTER SI ON VEUT LE GRAPHIQUE À L'EXÉCUTION
 #plt.show()
+plt.savefig("../plot/time/nbThreads1.png")
+
