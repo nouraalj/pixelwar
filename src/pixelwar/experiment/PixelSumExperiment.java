@@ -52,13 +52,13 @@ public class PixelSumExperiment {
 			System.out.println("On fait varier la taille de l'arbre");
 			
 			/* Paramètres fixes */
-		    tailleTuile = 2;
+		    tailleTuile = 6;
 		    nbThreads = 20;
 		    duration = 4000;
 		    
 		    resultPath = "data/pixelSum/testImgSize_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleToile = 2; tailleToile <= 64; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
+		    	for (tailleToile = 8; tailleToile <= 4096; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		pool3 = Executors.newFixedThreadPool(nbThreads);
@@ -169,13 +169,13 @@ public class PixelSumExperiment {
 	    	System.out.println("On fait varier la taille de la tuile");
 			
 	    	/* Paramètres fixes */
-	    	tailleToile = 16;
+	    	tailleToile = 1024;
 		    nbThreads = 20;
 		    duration = 4000;
 		    
 		    resultPath = "data/pixelSum/testTileSize_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleTuile = 2; tailleTuile <= tailleToile; tailleTuile += 2) {
+		    	for (tailleTuile = 2; tailleTuile < tailleToile; tailleTuile *= 2) {
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		pool3 = Executors.newFixedThreadPool(nbThreads);
@@ -285,13 +285,13 @@ public class PixelSumExperiment {
 	    	System.out.println("On fait varier le nombre de threads");
 			
 	    	/* Paramètres fixes */
-	    	tailleToile = 32;
-	    	tailleTuile = 2;
+	    	tailleToile = 1024;
+	    	tailleTuile = 16;
 		    duration = 4000;
 		    
 		    resultPath = "data/pixelSum/testNbThreads_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (nbThreads = 1; nbThreads <= 20; nbThreads++) {
+		    	for (nbThreads = 1; nbThreads <= 51; nbThreads  += 5) {
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		pool3 = Executors.newFixedThreadPool(nbThreads);
@@ -398,16 +398,17 @@ public class PixelSumExperiment {
 	    	
 	    	// on fait varier la durée de l'expériementation
 	    	System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-	    	System.out.println("On fait varier la durée de l'expériementation");
+	    	System.out.println("On fait varier la durée de l'expérimentation");
 			
 	    	/* Paramètres fixes */
 	    	tailleToile = 32;
 	    	nbThreads = 5;
-	    	tailleTuile = 2;
+	    	tailleTuile = 3;
 		    
 	    	resultPath = "data/pixelSum/testDuration_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (duration = 10; duration <= 10000; duration = duration*2) { // on double la durée à chaque fois
+		    	for (duration = 100; duration <= 10000; duration = duration*2) { // on double la durée à chaque fois
+		    		System.out.println("duration = " + duration);
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		pool3 = Executors.newFixedThreadPool(nbThreads);
@@ -425,7 +426,7 @@ public class PixelSumExperiment {
 		        	final ExecutorService poolbis2 = pool2;
 		        	final ExecutorService poolbis3 = pool3;
 		        	final int durationbis = duration;
-		        	
+		        	System.out.println("duration = " + duration);
 		        	/* Démarrer des threads qui arrêteront les pools après un certain délai */ 
 		        	t1 = new Thread(() -> {
 		        		try {
@@ -443,7 +444,7 @@ public class PixelSumExperiment {
 						}
 		        	});
 		        	t1.start();
-		        	
+		        	System.out.println("duration = " + duration);
 		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
@@ -451,7 +452,7 @@ public class PixelSumExperiment {
 			    		}
 			    	}
 			    	t1.join();
-		        	
+			    	System.out.println("duration = " + duration);
 		        	t2 = new Thread(() -> {
 		        		try {
 							Thread.sleep(durationbis);

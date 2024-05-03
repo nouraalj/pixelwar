@@ -37,14 +37,14 @@ public class TimeExperiment2 {
 			System.out.println("On fait varier la taille de l'arbre");
 			
 			/* Paramètres fixes */
-		    tailleTuile = 2;
+		    tailleTuile = 6;
 		    nbThreads = 20;
 		    
 		    resultPath = "data/time/testImgSize_time2.txt";
 
 
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleToile = 2; tailleToile <= 512; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
+		    	for (tailleToile = 8; tailleToile <= 4096; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 	
 		        	img2 = new ImageTreeInterMutex(tailleToile);
@@ -78,13 +78,12 @@ public class TimeExperiment2 {
 			System.out.println("On fait varier la taille de la tuile");
 			
 			/* Paramètres fixes */
-			tailleToile = 32;
+			tailleToile = 2048;
 		    nbThreads = 20;
-		 
 		    
 			resultPath = "data/time/testTileSize_time2.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleTuile = 1; tailleTuile < tailleToile; tailleTuile += 2) {
+		    	for (tailleTuile = 2; tailleTuile <= tailleToile; tailleTuile *= 2) {
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		
 		        	img2 = new ImageTreeInterMutex(tailleToile);
@@ -119,11 +118,11 @@ public class TimeExperiment2 {
  			System.out.println("On pose des tuiles de tailles différentes");
  			
  			// Paramètres fixes
- 			tailleToile = 1024;
+ 			tailleToile = 2048;
  		    nbThreads = 20;
  		    
  		    // Liste des tailles de tuiles 
- 		    int[] tailles = {2, 4, 8, 16, 32, 64, 128};
+ 		    int[] tailles = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048};
  		    
  			
  			pool2 = Executors.newFixedThreadPool(nbThreads);
@@ -163,13 +162,13 @@ public class TimeExperiment2 {
  			System.out.println("On fait varier le nombre de threads");
  			
  			/* Paramètres fixes */
- 			tailleToile = 128;
- 		    tailleTuile = 4;
+ 			tailleToile = 2048;
+ 		    tailleTuile = 16;
  		    
  		    
  		    resultPath = "data/time/testNbThreads_time2.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-	 	    	for (nbThreads = 1; nbThreads <= 20; nbThreads++) { 
+	 	    	for (nbThreads = 1; nbThreads <= 56; nbThreads += 5) { 
 	 	    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		
 		        	img2 = new ImageTreeInterMutex(tailleToile);
