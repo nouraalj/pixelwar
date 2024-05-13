@@ -13,7 +13,7 @@ import pixelwar.strategy.ImageTreeInterMutex;
 import pixelwar.strategy.ImageTreeMutex;
 import pixelwar.strategy.ImageTreePixelMutex;
 import pixelwar.tree.ImageTree;
-import pixelwar.utils.Utils;
+
 
 public class PixelSumExperiment {
 	private static final Object mutex = new Object();

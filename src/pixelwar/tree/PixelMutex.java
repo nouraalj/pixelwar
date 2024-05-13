@@ -1,6 +1,5 @@
 package pixelwar.tree;
 
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /* Classe de représentation d'un pixel verrouillable */
