@@ -11,11 +11,11 @@ delays = data[:, 1:]  # Les colonnes restantes : valeurs de délai
 
 # Créer un DataFrame avec les données
 import pandas as pd
-df = pd.DataFrame(delays, columns=[f"Thread {i+1}" for i in range(delays.shape[1])])
+df = pd.DataFrame(delays, columns=["Thread {i+1}" for i in range(delays.shape[1])])
 
 df_subset = df.iloc[:, :20]
 
-x_labels = [f"{i+1}" for i in range(20)]
+x_labels = ["{i+1}" for i in range(20)]
 
 # Tracer les boîtes à moustaches avec Seaborn
 plt.figure(figsize=(10, 6))

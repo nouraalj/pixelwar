@@ -14,9 +14,9 @@ donnees_courbe3 = donnees[:, 3]
 plt.figure(figsize=(10, 6))  # Définir la taille du graphique si nécessaire
 
 # Tracer les courbes
-plt.plot(taille_image, donnees_courbe1, label='Stratégie 1')
-plt.plot(taille_image, donnees_courbe2, label='Stratégie 2')
-plt.plot(taille_image, donnees_courbe3, label='Stratégie 3')
+plt.plot(taille_image, donnees_courbe1, label='Stratégie GiantLock')
+plt.plot(taille_image, donnees_courbe2, label='Stratégie InterLock')
+plt.plot(taille_image, donnees_courbe3, label='Stratégie PixelSum')
 
 # Ajouter des titres et des légendes
 plt.title('Débit de pixels posés en fonction de la taille d\'image')

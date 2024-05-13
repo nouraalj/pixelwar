@@ -169,7 +169,7 @@ public class TimeExperiment3 {
  		    
  		    resultPath = "data/time/testNbThreads_time3.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-	 	    	for (nbThreads = 1; nbThreads <= 56; nbThreads += 5) { 
+	 	    	for (nbThreads = 1; nbThreads <= 500; nbThreads += 50) { 
 	 	    		pool3 = Executors.newFixedThreadPool(nbThreads);
 		    		
 		        	img3 = new ImageTreePixelMutex(tailleToile);

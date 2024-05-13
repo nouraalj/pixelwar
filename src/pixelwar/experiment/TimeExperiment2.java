@@ -168,7 +168,7 @@ public class TimeExperiment2 {
  		    
  		    resultPath = "data/time/testNbThreads_time2.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-	 	    	for (nbThreads = 1; nbThreads <= 56; nbThreads += 5) { 
+	 	    	for (nbThreads = 1; nbThreads <= 500; nbThreads += 50) { 
 	 	    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		
 		        	img2 = new ImageTreeInterMutex(tailleToile);

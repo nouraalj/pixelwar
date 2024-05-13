@@ -24,7 +24,7 @@ sns.set(style="whitegrid")
 sns.boxplot(data=df_long, x='Image Size', y='Delay', showfliers=False, medianprops={'linewidth': 2.5})
 plt.xlabel('Taille de l\'image')
 plt.ylabel('Délai d\'attente')
-plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de l\'image pour la stratégie 1')
+plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de l\'image pour la stratégie GiantLock')
 plt.xticks(rotation=45) 
 plt.savefig("../plot/time/imgSize1.png")
 # À DÉCOMMENTER SI ON VEUT LE GRAPHIQUE À L'EXÉCUTION

@@ -21,7 +21,7 @@ plt.figure(figsize=(12, 8))
 sns.boxplot(data=df_long, x='Tile Size', y='Delay', showfliers=False, medianprops={'linewidth': 2.5})
 plt.xlabel('Taille de la tuile')
 plt.ylabel('Délai d\'attente')
-plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de la tuile pour la stratégie 3')
+plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de la tuile pour la stratégie PixelLock')
 plt.xticks(rotation=45)
 plt.savefig("../plot/time/tileSize3.png")
 # À DÉCOMMENTER SI ON VEUT LE GRAPHIQUE À L'EXÉCUTION
