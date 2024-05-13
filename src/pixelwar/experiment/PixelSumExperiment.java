@@ -51,7 +51,7 @@ public class PixelSumExperiment {
 			// On fait varier la taille de l'arbre
 			System.out.println("On fait varier la taille de l'arbre");
 			
-			/* Paramètres fixes */
+			// Paramètres fixes 
 		    tailleTuile = 6;
 		    nbThreads = 20;
 		    duration = 4000;
@@ -71,13 +71,13 @@ public class PixelSumExperiment {
 		        	cptGlobal2 = new AtomicInteger();
 		        	cptGlobal3 = new AtomicInteger();
 		        	
-		        	/* variables pour le code des threads juste en dessous qui a besoin de variables final */
+		        	// variables pour le code des threads juste en dessous qui a besoin de variables final
 		        	final ExecutorService poolbis1 = pool1;
 		        	final ExecutorService poolbis2 = pool2;
 		        	final ExecutorService poolbis3 = pool3;
 		        	final int durationbis = duration;
 		        	
-		        	/* Démarrer des threads qui arrêteront les pools après un certain délai */ 
+		        	// Démarrer des threads qui arrêteront les pools après un certain délai
 		        	t1 = new Thread(() -> {
 		        		try {
 							Thread.sleep(durationbis);
@@ -95,7 +95,7 @@ public class PixelSumExperiment {
 		        	});
 		        	t1.start();
 		        	
-		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
+		        	// chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() 
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
 			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1));
@@ -168,7 +168,7 @@ public class PixelSumExperiment {
 			System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 	    	System.out.println("On fait varier la taille de la tuile");
 			
-	    	/* Paramètres fixes */
+	    	// Paramètres fixes
 	    	tailleToile = 1024;
 		    nbThreads = 20;
 		    duration = 4000;
@@ -188,13 +188,13 @@ public class PixelSumExperiment {
 		        	cptGlobal2 = new AtomicInteger();
 		        	cptGlobal3 = new AtomicInteger();
 		        	
-		        	/* variables pour le code des threads juste en dessous qui a besoin de variables final */
+		        	// variables pour le code des threads juste en dessous qui a besoin de variables final
 		        	final ExecutorService poolbis1 = pool1;
 		        	final ExecutorService poolbis2 = pool2;
 		        	final ExecutorService poolbis3 = pool3;
 		        	final int durationbis = duration;
 		        	
-		        	/* Démarrer des threads qui arrêteront les pools après un certain délai */ 
+		        	// Démarrer des threads qui arrêteront les pools après un certain délai 
 		        	t1 = new Thread(() -> {
 		        		try {
 							Thread.sleep(durationbis);
@@ -212,7 +212,7 @@ public class PixelSumExperiment {
 		        	});
 		        	t1.start();
 		        	
-		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
+		        	// chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown()
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
 			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1));
@@ -291,7 +291,7 @@ public class PixelSumExperiment {
 		    
 		    resultPath = "data/pixelSum/testNbThreads_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (nbThreads = 1; nbThreads <= 51; nbThreads  += 5) {
+		    	for (nbThreads = 1; nbThreads <= 150; nbThreads  += 20) {
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		pool3 = Executors.newFixedThreadPool(nbThreads);
@@ -426,7 +426,7 @@ public class PixelSumExperiment {
 		        	final ExecutorService poolbis2 = pool2;
 		        	final ExecutorService poolbis3 = pool3;
 		        	final int durationbis = duration;
-		        	System.out.println("duration = " + duration);
+		        	//System.out.println("duration = " + duration);
 		        	/* Démarrer des threads qui arrêteront les pools après un certain délai */ 
 		        	t1 = new Thread(() -> {
 		        		try {
