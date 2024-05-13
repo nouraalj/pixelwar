@@ -1,3 +1,4 @@
+# coding=utf-8
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,8 +22,8 @@ plt.figure(figsize=(12, 8))
 sns.boxplot(data=df_long, x='Tile Size', y='Delay', showfliers=False, medianprops={'linewidth': 2.5})
 plt.xlabel('Taille de la tuile')
 plt.ylabel('Délai d\'attente')
-plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de la tuile pour la stratégie 2')
+plt.title('Boîte à moustaches du délai d\'attente en fonction de la taille de la tuile pour la stratégie InterLock')
 plt.xticks(rotation=45)  
-plt.savefig("../plot/time/tileSize2.png")
+plt.savefig("../plot/time/tileSizeInter.png")
 # À DÉCOMMENTER SI ON VEUT LE GRAPHIQUE À L'EXÉCUTION
 #plt.show()

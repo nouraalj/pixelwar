@@ -113,7 +113,7 @@ public class TimeExperiment1 {
 		    
 		    
 		    
-		    //On pose des tuiles de tailles différentes
+		    /*On pose des tuiles de tailles différentes
  			System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
  			System.out.println("On pose des tuiles de tailles différentes");
  			
@@ -155,7 +155,7 @@ public class TimeExperiment1 {
  		    
  	
  		    System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
-	
+			*/
 	    
 		    
 		    
@@ -171,7 +171,7 @@ public class TimeExperiment1 {
  		    
  		    resultPath = "data/time/testNbThreads_time1.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-	 	    	for (nbThreads = 1; nbThreads <= 500; nbThreads += 50) { 
+	 	    	for (nbThreads = 1; nbThreads <= 1000; nbThreads += 100) { 
 	 	    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		
 		        	img1 = new ImageTreeMutex(tailleToile);

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Executable Linux/MacOs
-PYTHON_CMD=py # Remplacer par votre commande python
+PYTHON_CMD=python3 # Remplacer par votre commande python
 $PYTHON_CMD plot_ImgSizeTime_1.py
 $PYTHON_CMD plot_ImgSizeTime_2.py
 $PYTHON_CMD plot_ImgSizeTime_3.py
