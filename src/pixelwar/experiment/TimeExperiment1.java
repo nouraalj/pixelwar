@@ -9,8 +9,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import pixelwar.strategy.ImageTreeMutex;
 import pixelwar.tree.ImageTree;
+import pixelwar.strategy.ImageTreeMutex;
+
 
 public class TimeExperiment1 {
 	
@@ -20,18 +21,21 @@ public class TimeExperiment1 {
 	 		ImageTree img1 = null;
 	 		
 			ExecutorService pool1 = null;
-
+			
+			/*Valeurs maximum des métriques à changer selon les caractéristiques matérielles*/
+			int maxToile = 512; // max 512 pour 16Go RAM, max 2048 pour 32Go RAM
+			int maxThreads = 500; // si durée d'execution trop longue, réduire nombre de threads et modifier le pas de boucle
 			
 			/* Paramètres des expérimentations */
-			int tailleTuile;
-		    int nbThreads;
-		    int tailleToile;
+			int tailleTuile = 16;
+		    int nbThreads = 20;
+		    int tailleToile = 512;
 			
 		    /* fichier de sortie */
 		    String resultPath;
+	    
+			System.out.println("Stratégie GiantLock");
 
-		    		    
-		    
 			// On fait varier la taille de l'arbre
 			System.out.println("On fait varier la taille de l'arbre");
 			
@@ -43,7 +47,7 @@ public class TimeExperiment1 {
 
 
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleToile = 8; tailleToile <= 4096; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
+		    	for (tailleToile = 8; tailleToile <= maxToile; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
 	
 		        	img1 = new ImageTreeMutex(tailleToile);
@@ -77,13 +81,12 @@ public class TimeExperiment1 {
 			System.out.println("On fait varier la taille de la tuile");
 			
 			/* Paramètres fixes */
-			tailleToile = 2048;
 		    nbThreads = 20;
 		 
 		    
 			resultPath = "data/time/testTileSize_time1.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleTuile = 2; tailleTuile <= tailleToile; tailleTuile *= 2) {
+		    	for (tailleTuile = 2; tailleTuile <= maxToile; tailleTuile *= 2) {
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		
 		        	img1 = new ImageTreeMutex(tailleToile);
@@ -164,14 +167,11 @@ public class TimeExperiment1 {
  			System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
  			System.out.println("On fait varier le nombre de threads");
  			
- 			/* Paramètres fixes */
- 			tailleToile = 2048;
- 		    tailleTuile = 16;
  		    
  		    
  		    resultPath = "data/time/testNbThreads_time1.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-	 	    	for (nbThreads = 1; nbThreads <= 1000; nbThreads += 100) { 
+	 	    	for (nbThreads = 1; nbThreads <= maxThreads; nbThreads += 100) { 
 	 	    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		
 		        	img1 = new ImageTreeMutex(tailleToile);
@@ -197,6 +197,8 @@ public class TimeExperiment1 {
     		e.printStackTrace();
     	}
 		System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
+		System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
  		    
 	 }
 	 	

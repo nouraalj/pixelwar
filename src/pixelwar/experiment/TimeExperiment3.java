@@ -21,30 +21,32 @@ public class TimeExperiment3 {
 	 		ImageTree img3 = null;
 	 		
 			ExecutorService pool3 = null;
-
+			
+			/*Valeurs maximum des métriques à changer selon les caractéristiques matérielles*/
+			int maxToile = 512; // max 512 pour 16Go RAM, max 4096 pour 32Go RAM
+			int maxThreads = 1000; // si durée d'execution trop longue, réduire nombre de threads
 			
 			/* Paramètres des expérimentations */
-			int tailleTuile;
-		    int nbThreads;
-		    int tailleToile;
+			int tailleTuile = 16;
+		    int nbThreads = 20;
+		    int tailleToile = 512;
 			
 		    /* fichier de sortie */
 		    String resultPath;
 
-		    		    
-		    
+			System.out.println("Stratégie PixelLock");
+ 		    	    
 			// On fait varier la taille de l'arbre
 			System.out.println("On fait varier la taille de l'arbre");
 			
 			/* Paramètres fixes */
 		    tailleTuile = 6;
-		    nbThreads = 20;
 		    
 		    resultPath = "data/time/testImgSize_time3.txt";
 
 
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleToile = 8; tailleToile <= 4096; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
+		    	for (tailleToile = 8; tailleToile <= maxToile; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
 		    		pool3 = Executors.newFixedThreadPool(nbThreads);
 	
 		        	img3 = new ImageTreePixelMutex(tailleToile);
@@ -73,18 +75,14 @@ public class TimeExperiment3 {
 	    	
 	
 			 
-			// On fait varier la taille de la tuile
+			// On fait varier la taille de la tuile (taille tuile Max : 256 pour 32Go RAM, 128 pour 16Go RAM)
 			System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 			System.out.println("On fait varier la taille de la tuile");
-			
-			/* Paramètres fixes */
-			tailleToile = 2048;
-		    nbThreads = 20;
 		 
 		    
 			resultPath = "data/time/testTileSize_time3.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleTuile = 2; tailleTuile <= 256; tailleTuile *= 2) {
+		    	for (tailleTuile = 2; tailleTuile <= 128; tailleTuile *= 2) {
 		    		pool3 = Executors.newFixedThreadPool(nbThreads);
 		    		
 		        	img3 = new ImageTreePixelMutex(tailleToile);
@@ -168,7 +166,7 @@ public class TimeExperiment3 {
  		    
  		    resultPath = "data/time/testNbThreads_time3.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-	 	    	for (nbThreads = 1; nbThreads <= 1000; nbThreads += 100) { 
+	 	    	for (nbThreads = 1; nbThreads <= maxThreads; nbThreads += 100) { 
 	 	    		pool3 = Executors.newFixedThreadPool(nbThreads);
 		    		
 		        	img3 = new ImageTreePixelMutex(tailleToile);

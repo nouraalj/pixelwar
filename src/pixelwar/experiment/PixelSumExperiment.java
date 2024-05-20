@@ -32,11 +32,16 @@ public class PixelSumExperiment {
 			AtomicInteger cptGlobal2 = null; 
 			AtomicInteger cptGlobal3 = null; 
 			
+			/*Valeurs maximum des métriques à changer selon les caractéristiques matérielles*/
+			int maxToile = 512; // max 512 pour 16Go RAM, max 4096 pour 32Go RAM
+			int maxThreads = 1000; // si durée d'execution trop longue, réduire nombre de threads
+			
 			/* Paramètres des expérimentations */
 			int tailleTuile; // taille du côté de la tuile
 		    int nbThreads; // nombre de threads du pool
 		    int duration; // durée de l'expérience en millisecondes
 		    int tailleToile; // taille du côté du canvas
+		    
 		    
 		    /* fichier de sortie */
 		    String resultPath;
@@ -58,7 +63,7 @@ public class PixelSumExperiment {
 		    
 		    resultPath = "data/pixelSum/testImgSize_sum.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleToile = 8; tailleToile <= 4096; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
+		    	for (tailleToile = 8; tailleToile <= maxToile; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
 		    		pool1 = Executors.newFixedThreadPool(nbThreads);
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		pool3 = Executors.newFixedThreadPool(nbThreads);
@@ -169,7 +174,7 @@ public class PixelSumExperiment {
 	    	System.out.println("On fait varier la taille de la tuile");
 			
 	    	// Paramètres fixes
-	    	tailleToile = 1024;
+	    	tailleToile = 1024; // max 1024 pour 32 Go, max 
 		    nbThreads = 20;
 		    duration = 4000;
 		    

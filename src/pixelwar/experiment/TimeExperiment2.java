@@ -21,18 +21,23 @@ public class TimeExperiment2 {
 	 		ImageTree img2 = null;
 	 		
 			ExecutorService pool2 = null;
-
+			
+			/*Valeurs maximum des métriques à changer selon les caractéristiques matérielles*/
+			int maxToile = 512; // max 512 pour 16Go RAM, max 4096 pour 32Go RAM
+			// si durée d'execution trop longue, réduire nombre de threads et modifier le pas de boucle de la derniere expérimentation :
+			int maxThreads = 1000; 
 			
 			/* Paramètres des expérimentations */
-			int tailleTuile;
-		    int nbThreads;
-		    int tailleToile;
+			int tailleTuile = 16;
+		    int nbThreads = 20;
+		    int tailleToile = 512; // 2048 pour 32Go de RAM
 			
 		    /* fichier de sortie */
 		    String resultPath;
 
 		    		    
-		    
+			System.out.println("Stratégie InterLock");
+
 			// On fait varier la taille de l'arbre
 			System.out.println("On fait varier la taille de l'arbre");
 			
@@ -44,7 +49,7 @@ public class TimeExperiment2 {
 
 
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-		    	for (tailleToile = 8; tailleToile <= 4096; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
+		    	for (tailleToile = 8; tailleToile <= maxToile; tailleToile <<= 1) { // la taille de la tuile doit être inférieure ou égale à celle de la toile
 		    		pool2 = Executors.newFixedThreadPool(nbThreads);
 	
 		        	img2 = new ImageTreeInterMutex(tailleToile);
@@ -77,9 +82,6 @@ public class TimeExperiment2 {
 			System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 			System.out.println("On fait varier la taille de la tuile");
 			
-			/* Paramètres fixes */
-			tailleToile = 2048;
-		    nbThreads = 20;
 		    
 			resultPath = "data/time/testTileSize_time2.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
@@ -156,19 +158,17 @@ public class TimeExperiment2 {
  		    System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
 		    
 		    */
+		    		    
 		    
 		    // On fait varier le nombre de threads
  			System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
  			System.out.println("On fait varier le nombre de threads");
- 			
- 			/* Paramètres fixes */
- 			tailleToile = 2048;
- 		    tailleTuile = 16;
  		    
- 		    
+ 		    tailleToile = 128; // 2048 pour 32Go RAM
+ 		    tailleTuile = 12;
  		    resultPath = "data/time/testNbThreads_time2.txt";
 		    try (BufferedWriter out = new BufferedWriter(new FileWriter(resultPath))) {
-	 	    	for (nbThreads = 1; nbThreads <= 1000; nbThreads += 100) { 
+	 	    	for (nbThreads = 1; nbThreads <= maxThreads; nbThreads += 100) { 
 	 	    		pool2 = Executors.newFixedThreadPool(nbThreads);
 		    		
 		        	img2 = new ImageTreeInterMutex(tailleToile);
@@ -194,7 +194,8 @@ public class TimeExperiment2 {
     		e.printStackTrace();
     	}
 		System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
- 		    
+		System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+    
 	 }
 	 	
 }

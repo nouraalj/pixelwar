@@ -14,7 +14,7 @@ public class ImageTreeMutex extends ImageTree {
     
     public ImageTreeMutex(int N) {
     	super(N);
-    }    
+    } 
 
     /* Pose la tuile et retourne le temps mis pour obtenir les verrous nécessaires */
 	@Override
