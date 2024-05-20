@@ -51,7 +51,6 @@ public class PixelSumExperiment {
 		    /* autres variables */
 		    Thread t1, t2, t3;
 		    
-	 		Random rand = new Random(); // pour la couleur de tuile (r,g,b aléatoires)
 
 		    
 		    
@@ -106,7 +105,7 @@ public class PixelSumExperiment {
 		        	// chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() 
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 			    	t1.join();
@@ -130,7 +129,7 @@ public class PixelSumExperiment {
 		        	
 		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 		        	t2.join();
@@ -154,7 +153,7 @@ public class PixelSumExperiment {
 			    	
 			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 			    	t3.join();
@@ -223,7 +222,7 @@ public class PixelSumExperiment {
 		        	// chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown()
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 			    	t1.join();
@@ -247,7 +246,7 @@ public class PixelSumExperiment {
 		        	
 		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 		        	t2.join();
@@ -271,7 +270,7 @@ public class PixelSumExperiment {
 			    	
 			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 			    	t3.join();
@@ -339,7 +338,7 @@ public class PixelSumExperiment {
 		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 			    	t1.join();
@@ -363,7 +362,7 @@ public class PixelSumExperiment {
 		        	
 		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 		        	t2.join();
@@ -387,7 +386,7 @@ public class PixelSumExperiment {
 			    	
 			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 			    	t3.join();
@@ -456,7 +455,7 @@ public class PixelSumExperiment {
 		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 			    	t1.join();
@@ -480,7 +479,7 @@ public class PixelSumExperiment {
 		        	
 		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 		        	t2.join();
@@ -504,7 +503,7 @@ public class PixelSumExperiment {
 			    	
 			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color((int)(Math.random() * 0x1000000))));
 			    		}
 			    	}
 			    	t3.join();

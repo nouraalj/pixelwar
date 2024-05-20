@@ -35,8 +35,6 @@ public class TimeExperiment3 {
 			
 		    /* fichier de sortie */
 		    String resultPath;
-
-	 		Random rand = new Random(); // pour la couleur de tuile (r,g,b aléatoires)
 		    
 			System.out.println("Stratégie PixelLock");
  		    	    
@@ -59,7 +57,7 @@ public class TimeExperiment3 {
 		        			        	
 			    	for(int j = 0; j < 100 ; j++) {
 			    		
-			    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+			    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile, new Color((int)(Math.random() * 0x1000000))));
 			    		double res = (double) result3.get();
 			    		out.write(res + " ");		 
 			    		
@@ -94,7 +92,7 @@ public class TimeExperiment3 {
 
 		        	for(int j = 0; j < 100 ; j++) {
 
-			    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+			    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile, new Color((int)(Math.random() * 0x1000000))));
 			    		double res = (double) result3.get();
 			    		out.write(res + " ");		 
 			    	}
@@ -178,7 +176,7 @@ public class TimeExperiment3 {
 		        	out.write(nbThreads + " ");
 
 	 		    	for(int j = 0; j < 100 ; j++) {
-	 		    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+	 		    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile, new Color((int)(Math.random() * 0x1000000))));
 			    		double res = (double) result3.get();
 			    		out.write(res + " ");
 	 		    	
@@ -196,7 +194,8 @@ public class TimeExperiment3 {
     		e.printStackTrace();
     	}
 		System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
- 		    
+		System.out.println("\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 	 }
 	 	
 }

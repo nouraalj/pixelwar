@@ -36,8 +36,6 @@ public class TimeExperiment1 {
 		    /* fichier de sortie */
 		    String resultPath;
 		    
-	 		Random rand = new Random(); // pour la couleur de tuile (r,g,b aléatoires)
-
 	    
 			System.out.println("Stratégie GiantLock");
 
@@ -61,7 +59,7 @@ public class TimeExperiment1 {
 		        			        	
 			    	for(int j = 0; j < 100 ; j++) {
 			    		
-			    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
+			    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile, new Color((int)(Math.random() * 0x1000000))));
 			    		double res = (double) result1.get();
 			    		out.write(res + " ");		 
 			    		
@@ -99,7 +97,7 @@ public class TimeExperiment1 {
 
 		        	for(int j = 0; j < 100 ; j++) {
 
-			    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+			    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile, new Color((int)(Math.random() * 0x1000000))));
 			    		double res = (double) result1.get();
 			    		out.write(res + " ");		 
 			    	}
@@ -184,7 +182,7 @@ public class TimeExperiment1 {
 		        	out.write(nbThreads + " ");
 
 	 		    	for(int j = 0; j < 100 ; j++) {
-	 		    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
+	 		    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile, new Color((int)(Math.random() * 0x1000000))));
 			    		double res = (double) result1.get();
 			    		out.write(res + " ");
 	 		    	
