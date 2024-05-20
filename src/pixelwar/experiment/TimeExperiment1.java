@@ -1,8 +1,10 @@
 package pixelwar.experiment;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,7 +21,7 @@ public class TimeExperiment1 {
 	 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 	 		/* Arbres & pools pour les graphes selon les paramètres à faire varier */
 	 		ImageTree img1 = null;
-	 		
+
 			ExecutorService pool1 = null;
 			
 			/*Valeurs maximum des métriques à changer selon les caractéristiques matérielles*/
@@ -33,6 +35,9 @@ public class TimeExperiment1 {
 			
 		    /* fichier de sortie */
 		    String resultPath;
+		    
+	 		Random rand = new Random(); // pour la couleur de tuile (r,g,b aléatoires)
+
 	    
 			System.out.println("Stratégie GiantLock");
 
@@ -56,7 +61,7 @@ public class TimeExperiment1 {
 		        			        	
 			    	for(int j = 0; j < 100 ; j++) {
 			    		
-			    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile));
+			    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
 			    		double res = (double) result1.get();
 			    		out.write(res + " ");		 
 			    		
@@ -94,7 +99,7 @@ public class TimeExperiment1 {
 
 		        	for(int j = 0; j < 100 ; j++) {
 
-			    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile));
+			    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		double res = (double) result1.get();
 			    		out.write(res + " ");		 
 			    	}
@@ -179,7 +184,7 @@ public class TimeExperiment1 {
 		        	out.write(nbThreads + " ");
 
 	 		    	for(int j = 0; j < 100 ; j++) {
-	 		    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile));
+	 		    		Future<Long> result1 = pool1.submit(new DrawTileTime(img1, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		double res = (double) result1.get();
 			    		out.write(res + " ");
 	 		    	

@@ -1,8 +1,10 @@
 package pixelwar.experiment;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,6 +36,8 @@ public class TimeExperiment3 {
 		    /* fichier de sortie */
 		    String resultPath;
 
+	 		Random rand = new Random(); // pour la couleur de tuile (r,g,b aléatoires)
+		    
 			System.out.println("Stratégie PixelLock");
  		    	    
 			// On fait varier la taille de l'arbre
@@ -55,7 +59,7 @@ public class TimeExperiment3 {
 		        			        	
 			    	for(int j = 0; j < 100 ; j++) {
 			    		
-			    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile));
+			    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		double res = (double) result3.get();
 			    		out.write(res + " ");		 
 			    		
@@ -90,7 +94,7 @@ public class TimeExperiment3 {
 
 		        	for(int j = 0; j < 100 ; j++) {
 
-			    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile));
+			    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		double res = (double) result3.get();
 			    		out.write(res + " ");		 
 			    	}
@@ -174,7 +178,7 @@ public class TimeExperiment3 {
 		        	out.write(nbThreads + " ");
 
 	 		    	for(int j = 0; j < 100 ; j++) {
-	 		    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile));
+	 		    		Future<Long> result3 = pool3.submit(new DrawTileTime(img3, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		double res = (double) result3.get();
 			    		out.write(res + " ");
 	 		    	

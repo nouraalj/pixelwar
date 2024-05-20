@@ -1,8 +1,10 @@
 package pixelwar.experiment;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,6 +37,7 @@ public class TimeExperiment2 {
 		    /* fichier de sortie */
 		    String resultPath;
 
+	 		Random rand = new Random(); // pour la couleur de tuile (r,g,b aléatoires)
 		    		    
 			System.out.println("Stratégie InterLock");
 
@@ -58,7 +61,7 @@ public class TimeExperiment2 {
 		        			        	
 			    	for(int j = 0; j < 100 ; j++) {
 			    		
-			    		Future<Long> result2 = pool2.submit(new DrawTileTime(img2, tailleTuile));
+			    		Future<Long> result2 = pool2.submit(new DrawTileTime(img2, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		double res = (double) result2.get();
 			    		out.write(res + " ");		 
 			    		
@@ -93,7 +96,7 @@ public class TimeExperiment2 {
 
 		        	for(int j = 0; j < 100 ; j++) {
 
-			    		Future<Long> result2 = pool2.submit(new DrawTileTime(img2, tailleTuile));
+			    		Future<Long> result2 = pool2.submit(new DrawTileTime(img2, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		double res = (double) result2.get();
 			    		out.write(res + " ");		 
 			    	}
@@ -176,7 +179,7 @@ public class TimeExperiment2 {
 		        	out.write(nbThreads + " ");
 
 	 		    	for(int j = 0; j < 100 ; j++) {
-	 		    		Future<Long> result2 = pool2.submit(new DrawTileTime(img2, tailleTuile));
+	 		    		Future<Long> result2 = pool2.submit(new DrawTileTime(img2, tailleTuile, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		double res = (double) result2.get();
 			    		out.write(res + " ");
 	 		    	

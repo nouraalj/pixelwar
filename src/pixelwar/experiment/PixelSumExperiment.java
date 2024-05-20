@@ -1,8 +1,10 @@
 package pixelwar.experiment;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,7 +51,8 @@ public class PixelSumExperiment {
 		    /* autres variables */
 		    Thread t1, t2, t3;
 		    
-		    
+	 		Random rand = new Random(); // pour la couleur de tuile (r,g,b aléatoires)
+
 		    
 		    
 		    
@@ -103,7 +106,7 @@ public class PixelSumExperiment {
 		        	// chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() 
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1));
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		}
 			    	}
 			    	t1.join();
@@ -127,7 +130,7 @@ public class PixelSumExperiment {
 		        	
 		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2));
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		}
 			    	}
 		        	t2.join();
@@ -151,7 +154,7 @@ public class PixelSumExperiment {
 			    	
 			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3));
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		}
 			    	}
 			    	t3.join();
@@ -220,7 +223,7 @@ public class PixelSumExperiment {
 		        	// chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown()
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1));
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		}
 			    	}
 			    	t1.join();
@@ -244,7 +247,7 @@ public class PixelSumExperiment {
 		        	
 		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2));
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		}
 			    	}
 		        	t2.join();
@@ -268,7 +271,7 @@ public class PixelSumExperiment {
 			    	
 			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3));
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())));
 			    		}
 			    	}
 			    	t3.join();
@@ -336,7 +339,7 @@ public class PixelSumExperiment {
 		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1));
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
 			    		}
 			    	}
 			    	t1.join();
@@ -360,7 +363,7 @@ public class PixelSumExperiment {
 		        	
 		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2));
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
 			    		}
 			    	}
 		        	t2.join();
@@ -384,7 +387,7 @@ public class PixelSumExperiment {
 			    	
 			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3));
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
 			    		}
 			    	}
 			    	t3.join();
@@ -453,7 +456,7 @@ public class PixelSumExperiment {
 		        	/* chaque thread du pool va produire des tuiles et les poser jusqu'à être interrompu par le pool.shutdown() */
 			    	for(int j = 0; (j < nbThreads) && (!pool1.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1));
+			    			pool1.submit(new DrawTilePixelSum(img1, tailleTuile, cptGlobal1, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
 			    		}
 			    	}
 			    	t1.join();
@@ -477,7 +480,7 @@ public class PixelSumExperiment {
 		        	
 		        	for(int j = 0; (j < nbThreads) && (!pool2.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2));
+			    			pool2.submit(new DrawTilePixelSum(img2, tailleTuile, cptGlobal2, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
 			    		}
 			    	}
 		        	t2.join();
@@ -501,7 +504,7 @@ public class PixelSumExperiment {
 			    	
 			    	for(int j = 0; (j < nbThreads) && (!pool3.isShutdown()); j++) {
 			    		synchronized(mutex) {
-			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3));
+			    			pool3.submit(new DrawTilePixelSum(img3, tailleTuile, cptGlobal3, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
 			    		}
 			    	}
 			    	t3.join();

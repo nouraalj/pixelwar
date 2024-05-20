@@ -1,5 +1,6 @@
 package pixelwar.tree;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public abstract class ImageTree{
     /* méthodes abstraites */
     public abstract Pixel createPixel(int id, int x, int y);
     public abstract InterNode createInterNode();
-    public abstract Long putTile(Tile t);
+    public abstract Long putTile(Tile t, Color c);
     
     /* Retourne la racine de l'arbre */
     public Node getRoot() {
@@ -237,6 +238,13 @@ public abstract class ImageTree{
     
     public void putPixel(Pixel p) {
     	p.setOwner(Thread.currentThread().getId());
+ 
+    }
+    
+    public void putPixelColor(Pixel p, Color c) {
+    	p.setOwner(Thread.currentThread().getId());
+    	p.setColor(c);
+ 
     }
     
 }

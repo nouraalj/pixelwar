@@ -1,5 +1,6 @@
 package pixelwar.strategy;
 
+import java.awt.Color;
 import java.util.concurrent.locks.ReentrantLock;
 
 import pixelwar.drawing.Tile;
@@ -18,7 +19,7 @@ public class ImageTreeMutex extends ImageTree {
 
     /* Pose la tuile et retourne le temps mis pour obtenir les verrous nécessaires */
 	@Override
-	public Long putTile(Tile t) {
+	public Long putTile(Tile t, Color c) {
 		try {
 			long debut = System.nanoTime();
 			mutex.lock(); // obtenir le verrou pour l'accès à l'arbre
@@ -26,7 +27,7 @@ public class ImageTreeMutex extends ImageTree {
 			
 			// poser les pixels
 			for (Pixel p : t.getPixels()) {
-				putPixel(p);
+				putPixelColor(p,c);
 			}
 			
 			return fin - debut;

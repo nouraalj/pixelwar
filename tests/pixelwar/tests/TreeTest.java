@@ -12,7 +12,7 @@ import pixelwar.tree.Pixel;
 public class TreeTest {
 
 	public static void main(String[] args) throws Exception {
-		int c = 16;
+		int c = 32;
 		System.out.println("\nCréation d'un arbre pour représenter une image carrée de côté " + c + "...");
 		ImageTree img = new ImageTreeMutex(c);
 		

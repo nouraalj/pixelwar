@@ -16,7 +16,7 @@ public class Pixel extends Node {
 		this.x = x;
 		this.y = y;
 		this.ownerT = -1;
-		color = Color.WHITE;
+		color = Color.GRAY;
 	}
 	
 	@Override

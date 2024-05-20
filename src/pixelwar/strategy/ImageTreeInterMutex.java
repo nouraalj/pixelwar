@@ -1,5 +1,6 @@
 package pixelwar.strategy;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +110,7 @@ public class ImageTreeInterMutex extends ImageTree {
 	
 	/* Pose la tuile et retourne le temps d'attente du thread pour obtenir les verrous nécessaires et que le sous-arbre soit libre */
 	@Override
-	public Long putTile(Tile t) {
+	public Long putTile(Tile t, Color c) {
 		
 		// calculer le chemin vers le noeud cible et récupérer la longueur de ce chemin
 		Map<Integer, byte[]> path_ = pathToNode(t);
@@ -161,7 +162,7 @@ public class ImageTreeInterMutex extends ImageTree {
 			// une fois que tous les noeuds sont libres on pose notre tuile
 			List<Pixel> pixels = t.getPixels();
 			for (Pixel p : pixels) {
-				putPixel(p);
+				putPixelColor(p, c);
 			}
 
 			return fin - debut;

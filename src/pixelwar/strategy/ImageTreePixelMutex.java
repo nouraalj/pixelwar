@@ -1,5 +1,6 @@
 package pixelwar.strategy;
 
+import java.awt.Color;
 import java.util.List;
 
 import pixelwar.drawing.Tile;
@@ -27,7 +28,7 @@ public class ImageTreePixelMutex extends ImageTree {
 	}
 
 	@Override
-	public Long putTile(Tile t) {
+	public Long putTile(Tile t, Color c) {
 		List<Pixel> pixels = t.sortById().getPixels(); // trier les pixels par ordre croissant d'identifiant
 		try {
 			/* obtenir les verrous de tous les pixels */
@@ -39,7 +40,7 @@ public class ImageTreePixelMutex extends ImageTree {
 			
 			/* poser les pixels */
 			for (Pixel p : pixels) {
-				putPixel(p);
+				putPixelColor(p, c);
 			}
 			
 			return fin - debut;
