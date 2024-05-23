@@ -52,4 +52,29 @@ public class ImageTreePixelMutex extends ImageTree {
 			}
 		}
 	}
+	
+	public Long putTileCS(Tile t, Color c) {
+		List<Pixel> pixels = t.sortById().getPixels(); // trier les pixels par ordre croissant d'identifiant
+		try {
+			/* obtenir les verrous de tous les pixels */
+			for (Pixel p : pixels) {
+				p.lockNode();
+			}
+			long debut = System.nanoTime();
+
+			/* poser les pixels */
+			for (Pixel p : pixels) {
+				putPixelColor(p, c);
+			}
+			long fin = System.nanoTime();
+
+			return fin - debut;
+			
+		} finally {
+			/* relâcher tous les verrous */
+			for (Pixel p : pixels) {
+				p.unlockNode();
+			}
+		}
+	}
 }

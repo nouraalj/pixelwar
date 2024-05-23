@@ -173,4 +173,67 @@ public class ImageTreeInterMutex extends ImageTree {
 		}
 	}	
 
+	public Long putTileCS(Tile t, Color c) {
+		
+		// calculer le chemin vers le noeud cible et récupérer la longueur de ce chemin
+		Map<Integer, byte[]> path_ = pathToNode(t);
+		int length = 0;
+		for (Integer i : path_.keySet()) { // récupérer l'unique clé de la map
+			length = i;
+		}
+		byte[] path = path_.get(length);
+		
+		Node cur = getRoot(); // noeud curseur
+		Node next = null; // noeud suivant du noeud curseur
+		int i = 0;
+		
+		try {
+			cur.lockNode(); // verrouillage de la racine
+
+			// suivre le chemin jusqu'à trouver le noeud cible (en verrouillant les noeuds rencontrés le long du chemin pour vérifier que la zone est libre)
+			while(i < length) {
+				if (path[i] == 1) {
+					next = cur.getRight();
+				} else {
+					next = cur.getLeft();
+				}
+				try {
+					next.lockNode();
+				} finally {
+					cur.unlockNode();
+				}
+
+				cur = next;
+				i++;
+			}
+			
+			// à ce stade cur pointe sur le noeud cible et il est bien verrouillé
+			
+			// attendre que tous les sous-noeuds de target soient déverrouillés
+			Node guilty = verifySubTree(cur);
+			while(guilty != null) {
+				try {
+					guilty.lockNode();
+				} finally {
+					guilty.unlockNode();
+				}
+				guilty = verifySubTree(cur);
+			}
+			
+			// une fois que tous les noeuds sont libres on pose notre tuile
+			List<Pixel> pixels = t.getPixels();
+			long debut = System.nanoTime();
+
+			for (Pixel p : pixels) {
+				putPixelColor(p, c);
+			}
+			long fin = System.nanoTime();
+
+			return fin - debut;
+			
+		} finally {
+			// on libère le noeud cible
+			cur.unlockNode();
+		}
+	}	
 }

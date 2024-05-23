@@ -36,7 +36,24 @@ public class ImageTreeMutex extends ImageTree {
 			mutex.unlock();
 		}
 	}
+	
+	public Long putTileCS(Tile t, Color c) {
+		try {
+			
+			mutex.lock(); // obtenir le verrou pour l'accès à l'arbre
+			long debut = System.nanoTime();
+			// poser les pixels
+			for (Pixel p : t.getPixels()) {
+				putPixelColor(p,c);
+			}
+			long fin = System.nanoTime();
 
+			return fin - debut;
+			
+		} finally {
+			mutex.unlock();
+		}
+	}
 	
 	@Override
 	public Pixel createPixel(int id, int x, int y) {

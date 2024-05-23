@@ -43,6 +43,7 @@ public abstract class ImageTree{
     public abstract Pixel createPixel(int id, int x, int y);
     public abstract InterNode createInterNode();
     public abstract Long putTile(Tile t, Color c);
+    public abstract Long putTileCS(Tile t, Color c);
     
     /* Retourne la racine de l'arbre */
     public Node getRoot() {
