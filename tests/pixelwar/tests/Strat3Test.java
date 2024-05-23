@@ -1,7 +1,6 @@
 package pixelwar.tests;
 
 import java.awt.Color;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -14,9 +13,8 @@ public class Strat3Test {
 	public static void main(String[] args) throws Exception {
 		ImageTreePixelMutex img = new ImageTreePixelMutex(4);
 		ExecutorService pool = Executors.newFixedThreadPool(3);
-		Random rand = new Random();
 		for(int i = 0; i<20; i++) {
-			pool.submit(new DrawTile(img, 2, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
+			pool.submit(new DrawTile(img, 2, new Color((int)(Math.random() * 0x1000000))));
 		}
 		
 		pool.shutdown();
@@ -24,7 +22,7 @@ public class Strat3Test {
 		
 		String path = "data/test/test_strat3.txt";
 		System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
-		img.exportImage(path);
+		img.exportImageColor(path);
 
 	}
 

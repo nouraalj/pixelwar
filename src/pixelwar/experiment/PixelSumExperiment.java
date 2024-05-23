@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -516,6 +515,7 @@ public class PixelSumExperiment {
 	    	}
 		    System.out.println("Ouvrir le fichier " + resultPath + " pour voir les résultats bruts");
 	    	
+		    
 	}
 		
 }

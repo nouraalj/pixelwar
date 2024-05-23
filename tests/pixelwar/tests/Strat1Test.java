@@ -14,9 +14,8 @@ public class Strat1Test {
 	public static void main(String[] args) throws Exception {
 		ImageTreeMutex img = new ImageTreeMutex(16);
 		ExecutorService pool = Executors.newFixedThreadPool(4);
-		Random rand = new Random();
 		for(int i = 0; i<15; i++) {
-			pool.submit(new DrawTile(img, 2, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
+			pool.submit(new DrawTile(img, 2, new Color((int)(Math.random() * 0x1000000))));
 		}
 		
 		pool.shutdown();
@@ -24,7 +23,7 @@ public class Strat1Test {
 		
 		String path = "data/test/test_strat1.txt";
 		System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
-		img.exportImage(path);
+		img.exportImageColor(path);
 
 	}
 

@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import pixelwar.drawing.Tile;
+import pixelwar.utils.ColorUtils;
+import pixelwar.utils.ColorUtils.ColorName;
 import pixelwar.utils.Matrix;
 import pixelwar.utils.Utils;
 
@@ -235,7 +237,29 @@ public abstract class ImageTree{
     	
     }
    
-    
+public void exportImageColor(String filename) {
+    	
+    	try(BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {        	
+        	Pixel[][] img = this.getMatrix().getImg(); // le getMatrix crée la matrice si elle est vide
+        	ColorUtils cu = new ColorUtils();
+        	for(int i = 0; i < N; i++) {
+        		for(int j = 0; j < N; j++) {
+        			if (img[i][j] != null) {
+        				bw.write(cu.getColorNameFromColor(img[i][j].getColor()));
+        			}
+        			else {
+        				bw.write("(PN)"); // pixel est null
+        			}
+        			bw.write("\t");
+        		}
+        		bw.write("\n");
+        	}
+		}
+    	catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    }
     public void putPixel(Pixel p) {
     	p.setOwner(Thread.currentThread().getId());
  

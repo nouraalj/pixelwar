@@ -14,16 +14,15 @@ public class Strat2Test {
 	public static void main(String[] args) throws Exception {
 		ImageTreeInterMutex img = new ImageTreeInterMutex(4);
 		ExecutorService pool = Executors.newFixedThreadPool(4);
-		Random rand = new Random();
 		for(int i = 0; i<20; i++) {
-			pool.submit(new DrawTile(img, 2, new Color(rand.nextInt(), rand.nextInt(), rand.nextInt())));
+			pool.submit(new DrawTile(img, 2, new Color((int)(Math.random() * 0x1000000))));
 		}
 		pool.shutdown();
 		pool.awaitTermination(15, TimeUnit.SECONDS);
 		
 		String path = "data/test/test_strat2.txt";
 		System.out.println("Ouvrir le fichier " + path + " pour voir l'image résultat");
-		img.exportImage(path);
+		img.exportImageColor(path);
 
 	}
 
